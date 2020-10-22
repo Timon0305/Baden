@@ -79,7 +79,7 @@ function TabStack() {
         options={{
           title: __(TabStackScreens.notifications),
           tabBarIcon: ({color, size}) => (
-            <Icon name={'stream'} color={color} size={size}/>
+            <Icon name={'truck'} color={color} size={size}/>
           ),
         }}
       />

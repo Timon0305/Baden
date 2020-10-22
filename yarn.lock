@@ -7297,6 +7297,21 @@ react-native-fbsdk@^2.0.0:
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-2.0.0.tgz#eb041bdb8f9b9180a1696d3bd7d7accee6554262"
   integrity sha512-CyPKoBVt9Y+KznALcnN4lkh6dUNqZjyFS6GbkXXTFf72wR9Dl8bXF2dDj56w/o5/TFoCnNCmQlZgh7P/NiElZQ==
 
+react-native-geocoder@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-geocoder/-/react-native-geocoder-0.5.0.tgz#ff4b9c55d5768a4784eefccb411761c82e067579"
+  integrity sha1-/0ucVdV2ikeE7vzLQRdhyC4GdXk=
+
+react-native-geocoding@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-geocoding/-/react-native-geocoding-0.4.0.tgz#e22c97500bfccc25273499ab3af87c27ac6ede8f"
+  integrity sha512-iXIqdLHDGVyhWLJyWGRFRdvQa3hDQoCX4MLwKA9zja3gQxZ91v51CLGrbvxCckOGzoxu2/WA6e8TM74rrPxlsA==
+
+react-native-geolocation-service@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-5.0.0.tgz#eaf0541c99db9cbed5af5e2ad2822d166e3a7543"
+  integrity sha512-y0uTtt/wT78i/7QestJJrZea9ZoYOzCP4fBgGbINWXU4f+OV3D8ndH7+nEOtnDKDhQc6YtJUeV7VqNxRI+hwBQ==
+
 react-native-gesture-handler@^1.7.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.8.0.tgz#18f61f51da50320f938957b0ee79bc58f47449dc"

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
 import {DoctorStackScreens, PillStackScreens, Screens} from '@/constants/Navigation';
 import {useStores} from "@/hooks";
 import {SPECIALITIES} from '@/constants/MockUpData';
@@ -25,8 +25,11 @@ function useViewModel(props) {
   const {user, data} = useStores();
 
   useEffect( () => {
-      setAddress(myInitialRegion.latitude + ' , ' + myInitialRegion.longitude)
-
+      Geocoder.init('AIzaSyD8OJWvqCanCoFm8ZQM8YFOaxIlAHwUIcQ');
+      Geocoder.from(myInitialRegion.latitude, myInitialRegion.longitude)
+          .then(json => {
+              setAddress(json.results[0].formatted_address)
+          })
   });
   return {
     user, data,

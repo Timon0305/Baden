@@ -37,18 +37,28 @@ const DoctorsByCategory = (props) => {
         :
         <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: 50}}>
           <View>
-            <TextInput value={vm.address}/>
+            <GreyInput value={vm.address}/>
           </View>
+          <Space height={hp('1%')}/>
             <View>
                 <MapView
                     style={styles.locationPicker}
                     initialRegion={vm.myInitialRegion}
+                    zoomEnabled={true}
+                    pitchEnabled={true}
+                    showsUserLocation={true}
+                    followsUserLocation={true}
+                    showsCompass={true}
+                    showsBuildings={true}
+                    showsTraffic={true}
+                    showsIndoors={true}
                     onPress={(e) => {
                       vm.setMyInitialRegion({...e.nativeEvent.coordinate, latitudeDelta, longitudeDelta})
                     }}
-                >
+                  >
                     <Marker
                         coordinate={vm.myInitialRegion}
+                        title={vm.address}
                     />
                 </MapView>
             </View>
