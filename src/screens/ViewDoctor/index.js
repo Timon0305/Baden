@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
   locationContainer: {
     marginVertical: hp('2%'),
     flexDirection: 'row',
+    width: wp('90%'),
   },
   locationPicker: {
     width: hp('9%'),

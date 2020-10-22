@@ -22,9 +22,10 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 import Loading from '@/components/Loading';
 import MapView, {Marker} from 'react-native-maps';
-import {GooglePlaceAutocomplete} from 'react-native-google-places-autocomplete';
-const tag = 'Screens::DoctorsByCategory';
-
+import GreyInput from '@/components/Input/GreyInput';
+const tag = 'Screens::Search Location';
+const latitudeDelta = 0.025;
+const longitudeDelta = 0.025;
 
 const DoctorsByCategory = (props) => {
   const vm = useViewModel(props);
@@ -34,17 +35,25 @@ const DoctorsByCategory = (props) => {
       {vm.data.isProcessing ?
         <Loading/>
         :
-        <ScrollView style={styles.container}>
-            <View style={styles.locationContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: 50}}>
+          <View>
+            <TextInput value={vm.address}/>
+          </View>
+            <View>
                 <MapView
                     style={styles.locationPicker}
                     initialRegion={vm.myInitialRegion}
+                    onPress={(e) => {
+                      vm.setMyInitialRegion({...e.nativeEvent.coordinate, latitudeDelta, longitudeDelta})
+                    }}
                 >
                     <Marker
                         coordinate={vm.myInitialRegion}
                     />
                 </MapView>
             </View>
+          <Space height={wp('2%')}/>
+
         </ScrollView>
       }
     </BoardWithHeader>

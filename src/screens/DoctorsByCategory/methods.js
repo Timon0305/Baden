@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import Geolocation from '@react-native-community/geolocation';
 import {DoctorStackScreens, PillStackScreens, Screens} from '@/constants/Navigation';
 import {useStores} from "@/hooks";
 import {SPECIALITIES} from '@/constants/MockUpData';
@@ -20,28 +21,17 @@ function useViewModel(props) {
       latitudeDelta: latitudeDelta,
       longitudeDelta: longitudeDelta,
   });
-  const [address] = useState('');
+  const [address, setAddress] = useState();
   const {user, data} = useStores();
 
+  useEffect( () => {
+      setAddress(myInitialRegion.latitude + ' , ' + myInitialRegion.longitude)
 
-  const handleSearchByCategory = async (category) => {
-    await data.fetchDoctorsByCategory(user.sessionToken, category);
-    console.log(tag, 'SELECT_CATEGORY', category);
-    if (data.lastStatus === '401') {
-      nav.navigate(Screens.logIn);
-      user.logOut();
-      alert(__('session_expired'));
-    } else {
-      nav.navigate(DoctorStackScreens.doctors);
-    }
-  };
-
-
-
+  });
   return {
-    data,
+    user, data,
+    address, setAddress,
     myInitialRegion, setMyInitialRegion,
-    handleSearchByCategory,
   }
 }
 

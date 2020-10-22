@@ -4,7 +4,7 @@ import {useStores} from "@/hooks";
 import {Alert} from 'react-native';
 
 function useViewModel(props) {
-    const tag = 'Screens::AddPillReminder';
+    const tag = 'Screens::VisaPay';
     const nav = useNavigation();
 
     const [name, setName] = useState('');
@@ -30,8 +30,8 @@ function useViewModel(props) {
             return;
         }
         try {
-            await data.addPillReminder(user.sessionToken, name, dosage, frequency, dateTime);
-            nav.goBack();
+            // await data.addPillReminder(user.sessionToken, name, dosage, frequency, dateTime);
+            // nav.goBack();
         } catch (e) {
             Alert.alert(
                 "Exception",
@@ -46,6 +46,7 @@ function useViewModel(props) {
             );
         }
     };
+
 
     return {
         name, setName,

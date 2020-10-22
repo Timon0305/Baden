@@ -41,7 +41,7 @@ const VisaPay = (props) => {
                         <View style={{width: '30%'}}>
                             <Text style={styles.textColor}>CVV</Text>
                             <GreyInput placeholder='1234' value={vm.frequency}
-                                       onChangeText={(val) => vm.setFrequency(val)}/>
+                                       onChangeText={(val) => vm.setFrequency(val)} />
                         </View>
                     </View>
                     <Space height={hp('2%')}/>

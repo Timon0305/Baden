@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {MoreStackScreens, DoctorStackScreens, TabStackScreens, Screens, PillStackScreens, PaymentScreens} from '@/constants/Navigation';
+import {MoreStackScreens, DoctorStackScreens, TabStackScreens, Screens, PillStackScreens} from '@/constants/Navigation';
 
 import Home from '@/screens/Home';
 import SignUp from '@/screens/SignUp';
@@ -19,7 +19,6 @@ import ContactUs from '@/screens/ContactUs';
 import MyProfile from '@/screens/MyProfile';
 import EditProfile from '@/screens/EditProfile';
 import PillReminder from '@/screens/PillReminder';
-import AddPillReminder from '@/screens/AddPillReminder';
 import Notifications from '@/screens/Notifications';
 import VisaPay from '@/screens/VisaPay';
 import MasterPay from '@/screens/MasterPay';
@@ -142,7 +141,6 @@ function PillReminderStack() {
         gestureEnabled: false,
       }}>
       <Stack.Screen name={PillStackScreens.pillReminder} component={PillReminder}/>
-      <Stack.Screen name={PillStackScreens.addPillReminder} component={AddPillReminder}/>
         <Stack.Screen name={PillStackScreens.visaPay} component={VisaPay}/>
         <Stack.Screen name={PillStackScreens.madaPay} component={MadaPay}/>
         <Stack.Screen name={PillStackScreens.masterPay} component={MasterPay}/>

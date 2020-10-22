@@ -101,8 +101,6 @@ export const updateProfile = (userToken, fullName, email, phoneNumber, password,
 
 export const getPillReminders = (userToken) => api.get(ApiUrl.pillReminder, {}, {headers: {userToken}});
 
-export const addPillReminder = (userToken, medicineName, dosage, frequency, timeToTake) => api.post(ApiUrl.pillReminder, {medicineName, dosage, frequency, timeToTake}, {headers: {userToken}});
-
 export const getDriverList = (userToken) => api.get(ApiUrl.driverList, {}, {headers: {userToken}});
 
 export const setNotificationAsRead = (userToken, id) => api.post(ApiUrl.notification + '/' + id, {}, {headers: {userToken}});

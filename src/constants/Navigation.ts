@@ -17,7 +17,6 @@ export const Screens = {
     viewDoctor: 'ViewDoctor', // 7
 
     pillReminders: 'PillReminders', // 10
-    addPillReminder: 'AddPillReminder', // 11
 
     notifications: 'Notifications', // 13
 
@@ -54,7 +53,6 @@ export const MoreStackScreens = {
 
 export const PillStackScreens = {
    pillReminder: 'PillReminder', // 10
-   addPillReminder: 'AddPillReminder', // 11
     visaPay: 'visaPay',
     masterPay: 'masterPay',
     madaPay: 'madaPay',

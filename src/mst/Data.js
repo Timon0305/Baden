@@ -101,61 +101,6 @@ const Data = types
       }
     });
 
-    const addPillReminder = flow(function* addPillReminder(
-      userToken,
-      medicineName,
-      dosage,
-      frequency,
-      timeToTake
-    ) {
-      self.setProcessing(true);
-
-      try {
-        // const response = yield Api.addPillReminder(userToken, medicineName, dosage, frequency, timeToTake);
-        // const {ok, data} = response;
-        // self.lastStatus = response.status;
-        // console.log(tag, 'Response from AddPillReminder API', data);
-        // if (ok) {
-        //   yield getPillReminders(userToken);
-        // }
-
-        for (const reminder of self.pillReminders) {
-          if (parseInt(timeToTake) === parseInt(reminder.timeToTake)) {
-            alert('A reminder already exists at that time.');
-            self.setProcessing(false);
-            return;
-          }
-        }
-
-        const alarmNotifiData = {
-          title: `${medicineName} - ${dosage}`,
-          message: `It is time to take this pill, ${medicineName} - ${dosage}`,
-          channel: 'pill_reminder',
-          loop_data: true,
-          data: {
-            name: medicineName,
-            dosage,
-            frequency,
-            dateTime: new Date(timeToTake).getTime().toString(),
-          }
-        };
-        // ReactNativeAN.sendNotification(alarmNotifiData);
-        const fireDate = ReactNativeAN.parseDate(timeToTake);
-        console.log(fireDate);
-        const alarm = yield ReactNativeAN.scheduleAlarm(
-          {
-            ...alarmNotifiData,
-            fire_date: fireDate,
-          });
-        console.log(tag, 'Alarm Added', alarm);
-        yield getPillReminders();
-      } catch (e) {
-        console.log(tag, 'Adding Pill Exception', e.message)
-      } finally {
-        self.setProcessing(false);
-      }
-    });
-
     const getNotifications = flow(function* getNotifications(
       userToken,
     ) {
@@ -352,7 +297,6 @@ const Data = types
 
     return {
       getPillReminders,
-      addPillReminder,
       getNotifications,
       setNotificationAsRead,
       fetchDoctorsByCategory,
