@@ -144,8 +144,8 @@ function PillReminderStack() {
       <Stack.Screen name={PillStackScreens.pillReminder} component={PillReminder}/>
       <Stack.Screen name={PillStackScreens.addPillReminder} component={AddPillReminder}/>
         <Stack.Screen name={PillStackScreens.visaPay} component={VisaPay}/>
-        <Stack.Screen name={PillStackScreens.masterPay} component={MasterPay}/>
         <Stack.Screen name={PillStackScreens.madaPay} component={MadaPay}/>
+        <Stack.Screen name={PillStackScreens.masterPay} component={MasterPay}/>
     </Stack.Navigator>
   )
 }

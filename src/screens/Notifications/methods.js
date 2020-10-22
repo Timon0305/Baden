@@ -12,14 +12,8 @@ function useViewModel(props) {
   const nav = useNavigation(props);
 
   const [notifications, setNotifications] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const {user, data} = useStores();
-
-  const NotificationTypes = {
-    REMINDER: 'REMINDER',
-    SCHEDULE: 'SCHEDULE',
-    ALERT: 'ALERT',
-    ANNOUNCEMENT: 'ANNOUNCEMENT'
-  };
 
   const fetchData = async () => {
     setNotifications(mockVehicle)
@@ -40,7 +34,8 @@ function useViewModel(props) {
   };
 
   const getOffer = (id) => {
-    console.log('get Offer', id)
+    console.log('get Offer', id);
+
   }
 
   useEffect(() => {
@@ -51,9 +46,8 @@ function useViewModel(props) {
     data,
     fetchData,
     notifications,
-    NotificationTypes,
     setNotificationAsRead,
-    getOffer
+    getOffer,
   }
 }
 

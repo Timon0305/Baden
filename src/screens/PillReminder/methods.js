@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {PaymentScreens, PillStackScreens} from '@/constants/Navigation';
+import { PillStackScreens} from '@/constants/Navigation';
 import {useStores} from "@/hooks";
 import ReactNativeAN from 'react-native-alarm-notification';
 import __ from '@/assets/lang';
@@ -21,7 +21,7 @@ function useViewModel(props) {
   const selectCard = (id) => {
     if (id === 1) {
       nav.navigate(PillStackScreens.visaPay)
-    } else if (id === 2) {
+    } else if (id === 3) {
       nav.navigate(PillStackScreens.masterPay)
     } else {
       nav.navigate(PillStackScreens.madaPay)

@@ -1,9 +1,10 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {StyleSheet, TouchableHighlight, View, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Button,TouchableHighlight, View, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
 import __ from '@/assets/lang';
 import BoardWithHeader from '@/components/Panel/BoardWithHeader';
 import Space from '@/components/Space';
+import Modal from 'react-native-modal';
 import {scale} from '@/styles/Sizes';
 import Colors from "@/styles/Colors";
 import Images from '@/styles/Images';
@@ -30,10 +31,7 @@ const Notifications = (props) => {
                           <NotificationCard
                               notification={item}
                               key={index}
-                              handleSwipeRight={() => {
-                                console.log(`Notification ${item.id} will be removed soon`);
-                                vm.setNotificationAsRead(item.id)
-                              }}
+                              onPress = {() => vm.getOffer(item.id)}
                           />
                           <Separator color={Colors.grey} width={2}/>
                         </View>
@@ -45,6 +43,7 @@ const Notifications = (props) => {
                   </Text>
               }
               <Space height={hp('3%')}/>
+
             </ScrollView>
         }
 
@@ -53,14 +52,16 @@ const Notifications = (props) => {
   )
 };
 
-export const NotificationCard = ({notification, handleSwipeRight, handleSwipeDown}) => {
+export const NotificationCard = ({notification, onPress}) => {
   const renderContent = () => {
     return (
         <View style={styles.vehicleDesc} >
           <Text style={styles.vehicleName} numberOfLines={1}>{notification.vehicleName}</Text>
           <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
             <Text>{notification.date}</Text>
-            <Text>Get Offer</Text>
+            <TouchableOpacity onPress={onPress}>
+              <Text>Get Offer</Text>
+            </TouchableOpacity>
           </View>
         </View>
     );
