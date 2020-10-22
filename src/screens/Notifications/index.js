@@ -1,6 +1,6 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {StyleSheet, Button,TouchableHighlight, View, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Input, Button,TouchableHighlight,KeyboardAvoidingView, View, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
 import __ from '@/assets/lang';
 import BoardWithHeader from '@/components/Panel/BoardWithHeader';
 import Space from '@/components/Space';
@@ -13,7 +13,10 @@ import useViewModel from './methods';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 import Loading from "@/components/Loading";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import Dialog, { DialogContent, SlideAnimation, DialogButton } from 'react-native-popup-dialog';
 import {mockUser} from '@/constants/MockUpData';
+import {DialogFooter} from 'react-native-popup-dialog/src';
+import GreyInput from '@/components/Input/GreyInput';
 
 const Notifications = (props) => {
   const vm = useViewModel(props);
@@ -43,7 +46,50 @@ const Notifications = (props) => {
                   </Text>
               }
               <Space height={hp('3%')}/>
-
+              <Dialog
+                visible={vm.visible}
+                width={0.8}
+                overlayOpacity={0.5}
+                onTouchOutside={() => vm.setVisible(false)}
+                dialogAnimation={new SlideAnimation({
+                  slideFrom: 'bottom'
+                })}
+                footer={
+                  <DialogFooter>
+                    <DialogButton
+                        text="CANCEL"
+                        onPress={() => {
+                          vm.modalCancel()
+                        }}
+                    />
+                    <DialogButton
+                        text="OK"
+                        onPress={() => {vm.sentOffer}}
+                    />
+                  </DialogFooter>
+                }
+              >
+                <DialogContent>
+                  <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                    <View>
+                      <Text style={{textAlign: 'center', fontSize: wp('5.8%'), marginTop: hp('2%')}}>Get Offer</Text>
+                    </View>
+                    <Space height={hp('2%')}/>
+                    <View>
+                      <Text>Driver Name</Text>
+                      <GreyInput  placeholder='dirver name' value={vm.userName} onChangeText={(val) => vm.setUserName(val)} />
+                    </View>
+                    <View>
+                      <Text>Offer Location</Text>
+                      <GreyInput placeholder='The Learning Zone' value={vm.offerLocation} onChangeText={(val) => vm.setOfferLocation(val)} />
+                    </View>
+                    <View>
+                      <Text>Offer Price</Text>
+                      <GreyInput placeholder='SAR 100' value={vm.offerPrice} onChangeText={(val) => vm.setOfferPrice(val)} />
+                    </View>
+                  </KeyboardAvoidingView>
+                </DialogContent>
+              </Dialog>
             </ScrollView>
         }
 
@@ -73,23 +119,12 @@ export const NotificationCard = ({notification, onPress}) => {
   };
 
   return (
-      <GestureRecognizer
-          onSwipeUp={(state) => {
-            if (handleSwipeDown)
-              handleSwipeDown()
-          }}
-          onSwipeRight={(state) => {
-            if (handleSwipeRight)
-              handleSwipeRight()
-          }}
-          config={config}
-      >
+      <View>
         <View style={styles.notificationContainer}>
           <Image source={notification.image} style={styles.notificationAvatar}/>
           {renderContent()}
         </View>
-
-      </GestureRecognizer>
+      </View>
   );
 };
 

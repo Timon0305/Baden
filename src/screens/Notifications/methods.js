@@ -12,7 +12,10 @@ function useViewModel(props) {
   const nav = useNavigation(props);
 
   const [notifications, setNotifications] = useState();
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [offerLocation, setOfferLocation] = useState('');
+  const [offerPrice, setOfferPrice] = useState('');
   const {user, data} = useStores();
 
   const fetchData = async () => {
@@ -35,7 +38,33 @@ function useViewModel(props) {
 
   const getOffer = (id) => {
     console.log('get Offer', id);
+    setVisible(true);
+  }
 
+  const modalCancel = () => {
+    setVisible(false)
+  }
+
+  const sentOffer = async () => {
+    if (!userName || !offerLocation || !offerPrice) {
+      alert('Input Valid Values');
+      return;
+    }
+    try {
+      console.log('Offer Successfully Sent')
+    } catch (e) {
+      Alert.alert(
+          "Exception",
+          e.message,
+          [
+            {
+              text: 'OK',
+              onPress: () => console.log(tag, 'onPressAdd', 'OK pressed')
+            }
+          ],
+          {cancelable: false}
+      );
+    }
   }
 
   useEffect(() => {
@@ -44,10 +73,16 @@ function useViewModel(props) {
 
   return {
     data,
+    visible, setVisible,
+    userName, setUserName,
+    offerLocation, setOfferLocation,
+    offerPrice, setOfferPrice,
+    notifications,setNotifications,
     fetchData,
-    notifications,
     setNotificationAsRead,
     getOffer,
+    modalCancel,
+    sentOffer
   }
 }
 
