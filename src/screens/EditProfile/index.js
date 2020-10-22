@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@/components/Container';
-import {View, StyleSheet, Image, Text, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native';
+import {View, StyleSheet,TouchableHighlight, Image, Text, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native';
 import {observer} from 'mobx-react';
 import Space from '@/components/Space';
 import GreyInput from '@/components/Input/GreyInput';
@@ -50,51 +50,12 @@ const EditProfile = (props) => {
                      onChangeText={(val) => vm.setPhoneNumber(val)}/>
           <GreyInput placeholder={__('password')} value={vm.password} onChangeText={(val) => vm.setPassword(val)} secureTextEntry={true}/>
         </KeyboardAvoidingView>
-        <View style={{width: '100%', ...(Platform.OS !== 'android' && {zIndex: 50})}}>
-          <DropDownPicker
-            items={[
-              {label: __('female'), value: 'female'},
-              {label: __('male'), value: 'male'},
-            ]}
-            style={styles.dropDownBack}
-            containerStyle={styles.dropDownContainer}
-            itemStyle={styles.dropDownItem}
-            dropDownStyle={styles.dropDown}
-            labelStyle={styles.dropDownLabel}
-            onChangeItem={item => vm.setGender(item.value)}
-            defaultValue={vm.user.gender}
-            placeholder={__('select_gender')}
-          />
-        </View>
-        <View style={{width: '100%', ...(Platform.OS !== 'android' && {zIndex: 40})}}>
-          <DropDownPicker
-            items={vm.bloodTypes}
-            style={styles.dropDownBack}
-            containerStyle={styles.dropDownContainer}
-            itemStyle={styles.dropDownItem}
-            dropDownStyle={styles.dropDown}
-            labelStyle={styles.dropDownLabel}
-            onChangeItem={item => vm.setBloodType(item.value)}
-            placeholder={__('select_blood_type')}
-            defaultValue={vm.user.bloodType}
-          />
-        </View>
-        <View style={{width: '100%', ...(Platform.OS !== 'android' && {zIndex: 30})}}>
-          <DropDownPicker
-            items={[
-              {label: __('english'), value: 'english'},
-            ]}
-            style={styles.dropDownBack}
-            containerStyle={styles.dropDownContainer}
-            itemStyle={styles.dropDownItem}
-            dropDownStyle={styles.dropDown}
-            labelStyle={styles.dropDownLabel}
-            onChangeItem={item => vm.setLanguage(item.value)}
-            placeholder={__('language')}
-          />
-        </View>
-        <BlueButton onPress={vm.onPressUpdate} caption={__('update_profile')}/>
-
+        <Space height={hp('3%')}></Space>
+        <TouchableHighlight style={styles.whiteButton} onPress={vm.onPressUpdate} underlayColor={Colors.blue1}>
+          <Text style={{textAlign: 'center'}}>
+            {__('edit_profile')}
+          </Text>
+        </TouchableHighlight>
         <Space height={hp('20%')}/>
 
       </ScrollBoardWithHeaderLBButton>}
@@ -146,7 +107,16 @@ const styles = StyleSheet.create({
     color: Colors.grey_dark,
     fontSize: hp('1.8%'),
   },
-
+  whiteButton: {
+    backgroundColor: '#FFF',
+    width: '100%',
+    padding: hp('1.8%'),
+    borderRadius: hp('0.5%'),
+    borderWidth: 1,
+    borderColor: Colors.blue1,
+    alignContent: 'center',
+    textAlign: 'center'
+  },
 });
 
 export default observer(EditProfile);

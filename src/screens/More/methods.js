@@ -23,7 +23,7 @@ function useViewModel(props) {
   };
 
   const onPressPillReminder = () => {
-    nav.navigate(TabStackScreens.pillReminderStack)
+    nav.navigate(TabStackScreens.notifications)
   };
 
   const onPressAccountSettings = () => {

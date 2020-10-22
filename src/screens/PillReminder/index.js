@@ -57,9 +57,9 @@ export const CardButton = ({image, caption, onPress}) => {
             elevation: 10,
             shadowColor: '#ddd',
             shadowRadius: wp('2%'),
-            borderRadius: wp('2%'),
+            borderRadius: wp('1%'),
             shadowOpacity: 0.4,
-            backgroundColor: '#eeeaea',
+            backgroundColor: Colors.lightblue,
             marginVertical: wp('3%')
         },
         caption: {
@@ -68,7 +68,7 @@ export const CardButton = ({image, caption, onPress}) => {
             fontSize: hp('2.7%'),
         },
         image: {
-            borderRadius: wp('2%'),
+            borderRadius: wp('1%'),
             justifyContent: 'center',
             alignItems: 'stretch',
             width: wp('90%'),
@@ -91,8 +91,9 @@ const styles = StyleSheet.create({
     },
     note: {
         fontSize: hp('4%'),
-        color: '#777',
+        color: '#d71313',
         textAlign: 'left',
+        fontWeight: 'bold',
         marginVertical: hp('3%'),
     },
     categoryLine: {

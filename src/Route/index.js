@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {MoreStackScreens, DoctorStackScreens, TabStackScreens, Screens, PillStackScreens} from '@/constants/Navigation';
+import {MoreStackScreens, DoctorStackScreens, TabStackScreens, Screens, PillStackScreens, PaymentScreens} from '@/constants/Navigation';
 
 import Home from '@/screens/Home';
 import SignUp from '@/screens/SignUp';
@@ -21,6 +21,9 @@ import EditProfile from '@/screens/EditProfile';
 import PillReminder from '@/screens/PillReminder';
 import AddPillReminder from '@/screens/AddPillReminder';
 import Notifications from '@/screens/Notifications';
+import VisaPay from '@/screens/VisaPay';
+import MasterPay from '@/screens/MasterPay';
+import MadaPay from '@/screens/MadaPay';
 import Splash from '@/screens/Splash';
 
 import Colors from '@/styles/Colors';
@@ -102,6 +105,16 @@ function TabStack() {
           ),
         }}
       />
+    {/*  <Tab.Screen*/}
+    {/*    name={TabStackScreens.pillReminderStack}*/}
+    {/*    component={PillReminder}*/}
+    {/*    options={{*/}
+    {/*        title: __('payment'),*/}
+    {/*        tabBarIcon: ({color, size}) => (*/}
+    {/*            <FoundationIcon name={'indent-more'} color={color} size={size}/>*/}
+    {/*        ),*/}
+    {/*    }}*/}
+    {/*/>*/}
     </Tab.Navigator>
   )
 }
@@ -130,30 +143,34 @@ function PillReminderStack() {
       }}>
       <Stack.Screen name={PillStackScreens.pillReminder} component={PillReminder}/>
       <Stack.Screen name={PillStackScreens.addPillReminder} component={AddPillReminder}/>
+        <Stack.Screen name={PillStackScreens.visaPay} component={VisaPay}/>
+        <Stack.Screen name={PillStackScreens.masterPay} component={MasterPay}/>
+        <Stack.Screen name={PillStackScreens.madaPay} component={MadaPay}/>
     </Stack.Navigator>
   )
 }
 
+
 function MoreStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        gestureEnabled: false
-      }}
-    >
-      <Stack.Screen name={MoreStackScreens.more} component={More}/>
-      <Stack.Screen name={MoreStackScreens.termsAndConditions} component={TermsAndConditions}/>
-      <Stack.Screen name={MoreStackScreens.contactUs} component={ContactUs}/>
-      <Stack.Screen name={MoreStackScreens.myProfile} component={MyProfile}/>
-      <Stack.Screen name={MoreStackScreens.editProfile} component={EditProfile}/>
-    </Stack.Navigator>
-  )
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false,
+                gestureEnabled: false
+            }}
+        >
+            <Stack.Screen name={MoreStackScreens.more} component={More}/>
+            <Stack.Screen name={MoreStackScreens.termsAndConditions} component={TermsAndConditions}/>
+            <Stack.Screen name={MoreStackScreens.contactUs} component={ContactUs}/>
+            <Stack.Screen name={MoreStackScreens.myProfile} component={MyProfile}/>
+            <Stack.Screen name={MoreStackScreens.editProfile} component={EditProfile}/>
+        </Stack.Navigator>
+    )
 }
 
 const Route = (props) => {
   const vm = useViewModel(props);
-  const {isValid} = vm.store.user && vm.store.data.lastStatus == '401';
+  const {isValid} = vm.store.user && vm.store.data.lastStatus === '401';
 
   if (vm.isInitializing) {
     return <Splash/>;

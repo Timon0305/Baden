@@ -21,6 +21,22 @@ const BlueButton = ({caption, onPress}) => {
   );
 };
 
+const SimpleButton = ({caption, onPress}) => {
+  return (
+      <TouchableOpacity style={styles.container} onPress={onPress}>
+        <View
+            style={styles.imageContainer}
+            imageStyle={styles.image}
+            resizeMode={'cover'}
+        >
+          <Text style={styles.caption}>
+            {caption}
+          </Text>
+        </View>
+      </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',

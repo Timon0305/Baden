@@ -13,7 +13,7 @@ const Colors = {
   grey_dark: '#555555',
   grey: '#ddd',
   grey_light: '#f8f8f8',
-
+  lightblue: '#f9f4fb',
   black: '#000',
 
   white2: '#fff'

@@ -7,9 +7,11 @@ import {widthPercentageToDP, heightPercentageToDP} from "react-native-responsive
 const GreyInput = ({onChangeText, value, placeholder, numberOfLines, multiline, onFocus, secureTextEntry = false}) => {
   const styles = StyleSheet.create({
     textInput: {
-      backgroundColor: Colors.grey_light,
+      backgroundColor: Colors.lightblue,
+      borderColor: Colors.lightblue,
       paddingHorizontal: widthPercentageToDP('3.5%'),
       fontSize: heightPercentageToDP('2%'),
+      borderRadius: heightPercentageToDP('1%'),
       marginVertical: heightPercentageToDP('0.5%'),
       textAlignVertical: multiline ? 'top' : 'center',
       height: multiline ? heightPercentageToDP('15%') : heightPercentageToDP('6%'),

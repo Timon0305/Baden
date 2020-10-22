@@ -107,6 +107,9 @@ const en = {
   'diagnostics': 'Diagnostics',
   'diabetes_specialist': 'Diabetes Specialist',
   'eye_specialist': 'Eye Specialist',
+  'pay_with_visa' : "Pay with Visa Card",
+  'pay_with_master' : "Pay with Master Card",
+  'pay_with_mada' : "Pay with Mada Card"
 };
 
 export default en;

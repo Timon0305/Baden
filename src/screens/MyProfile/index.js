@@ -27,13 +27,6 @@ const PillReminder = (props) => {
         <KeyValueLabel name={__('email')} value={vm.user.email}/>
         <Separator color={Colors.grey} width={2}/>
         <KeyValueLabel name={__('phone_number')} value={vm.user.phoneNumber}/>
-        <Separator color={Colors.grey} width={2}/>
-        <KeyValueLabel name={__('gender')} value={vm.user.gender}/>
-        <Separator color={Colors.grey} width={2}/>
-        <KeyValueLabel name={__('blood_type')} value={vm.user.bloodType}/>
-        <Separator color={Colors.grey} width={2}/>
-        <KeyValueLabel name={__('language')} value={capitalizeString(vm.user.language)}/>
-        <Space height={hp('3%')}/>
 
         <TouchableHighlight style={styles.whiteButton} onPress={vm.onPressEdit} underlayColor={Colors.blue1}>
           <Text style={styles.whiteButtonLabel}>
