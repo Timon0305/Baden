@@ -38,5 +38,6 @@ export default {
   },
   googleMap: {
     apiKey: 'AIzaSyASl1GnSrkVt9L2Zxu3tXRzPuOXdXgUAR4'
-  }
+  },
+  location: 'Saudi'
 };

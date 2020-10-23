@@ -28,18 +28,15 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         width: '100%',
-        borderRadius: wp('4%'),
-        backgroundColor: 'pink'
+        backgroundColor: 'white',
     },
     image: {
         borderRadius: wp('1.5%')
     },
     caption: {
-        color: '#fff',
+        color: '#841584',
         fontSize: hp('2%'),
-        fontWeight: 'bold',
         textAlign: 'center',
-        margin: hp('3%'),
         textAlignVertical: 'center',
     }
 });

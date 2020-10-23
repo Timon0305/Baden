@@ -84,6 +84,10 @@ const Notifications = (props) => {
                       <GreyInput placeholder='The Learning Zone' value={vm.offerLocation} onChangeText={(val) => vm.setOfferLocation(val)} />
                     </View>
                     <View>
+                      <Text>Offer DateTime</Text>
+                      <GreyInput placeholder='2020-10-12:01:02:03' value={vm.offerTime} onChangeText={(val) => vm.setOfferTime(val)} />
+                    </View>
+                    <View>
                       <Text>Offer Price</Text>
                       <GreyInput placeholder='SAR 100' value={vm.offerPrice} onChangeText={(val) => vm.setOfferPrice(val)} />
                     </View>

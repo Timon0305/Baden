@@ -15,6 +15,7 @@ function useViewModel(props) {
   const [visible, setVisible] = useState(false);
   const [userName, setUserName] = useState('');
   const [offerLocation, setOfferLocation] = useState('');
+  const [offerTime, setOfferTime] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
   const {user, data} = useStores();
 
@@ -76,6 +77,7 @@ function useViewModel(props) {
     visible, setVisible,
     userName, setUserName,
     offerLocation, setOfferLocation,
+    offerTime, setOfferTime,
     offerPrice, setOfferPrice,
     notifications,setNotifications,
     fetchData,
