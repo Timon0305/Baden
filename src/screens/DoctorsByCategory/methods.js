@@ -45,7 +45,7 @@ function useViewModel(props) {
         setDate(currentDate);
         if (mode === 'date') {
             setBookDate(currentDate.toDateString());
-            await AsyncStorage.setItem(Config.location, currentDate.toDateString())
+            await AsyncStorage.setItem('kk', currentDate.toDateString())
         } else {
             setBookTime(currentDate.toTimeString())
         }
@@ -65,7 +65,7 @@ function useViewModel(props) {
     }
 
     const getBook = async () => {
-        await console.log(AsyncStorage.getItem(Config.location))
+        console.log('my date',await AsyncStorage.getItem('kk'))
     }
 
     return {
