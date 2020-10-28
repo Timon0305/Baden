@@ -21,13 +21,8 @@ const User = types
     email: defString,
     fullName: defString,
     password: defString,
-    gender: defString,
     avatarUrl: defString,
     phoneNumber: defString,
-    city: defString,
-    street: defString,
-    language: defString,
-    bloodType: defString,
     accountType: defString,
     hadSignedUp: false,
     statusCode: 0,
@@ -51,14 +46,9 @@ const User = types
         self.id = userDetails.id;
         self.fullName = userDetails.fullName;
         self.password = data.password;
-        self.gender = userDetails.gender;
         self.email = userDetails.email;
         self.phoneNumber = userDetails.phoneNumber;
         self.avatarUrl = userDetails.avatarUrl.startsWith('http') ? userDetails.avatarUrl : Config.appBaseUrl + userDetails.avatarUrl;
-        self.bloodType = userDetails.bloodType;
-        self.language = userDetails.language;
-        self.city = userDetails.city;
-        self.street = userDetails.street;
         self.createdAt = userDetails.createdAt;
       }
     };
@@ -162,9 +152,6 @@ const User = types
       email,
       phoneNumber,
       password,
-      gender,
-      bloodType,
-      language,
       avatarSource,
     ) {
 
@@ -174,10 +161,7 @@ const User = types
         email = email ? email : self.email;
         phoneNumber = phoneNumber ? phoneNumber : self.phoneNumber;
         password = password ? password : self.password;
-        gender = gender ? gender : self.gender;
-        bloodType = bloodType ? bloodType : self.bloodType;
-        language = language ? language : self.language;
-        const response = yield Api.updateProfile(self.sessionToken, fullName, email, phoneNumber, password, gender, bloodType, language, avatarSource);
+        const response = yield Api.updateProfile(self.sessionToken, fullName, email, phoneNumber, password,  avatarSource);
         let {data, ok} = response;
         console.log(tag, 'Response from updateProfile', data);
 

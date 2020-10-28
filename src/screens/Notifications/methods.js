@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {Screens, PillStackScreens} from '@/constants/Navigation';
-import {mockVehicle} from '@/constants/MockUpData';
+import {Screens, PillStackScreens, TabStackScreens} from '@/constants/Navigation';
+import AsyncStorage from '@react-native-community/async-storage'
 import {useStores} from "@/hooks";
 import __ from '@/assets/lang';
 
@@ -11,34 +11,33 @@ function useViewModel(props) {
 
   const nav = useNavigation(props);
 
-  const [notifications, setNotifications] = useState();
+  const [vehicleList, setVehicleList] = useState();
   const [visible, setVisible] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [vehicleId, setVehicleId] = useState()
   const [offerLocation, setOfferLocation] = useState('');
   const [offerTime, setOfferTime] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
   const {user, data} = useStores();
 
   const fetchData = async () => {
-    setNotifications(mockVehicle)
-    // await data.notifications(user.sessionToken);
-    // console.log('mockup data', mockNotifications);
-    // if (data.lastStatus === "401") {
-    //   alert(__('session_expired'));
-    //   user.logOut();
-    //   nav.navigate(Screens.logIn);
-    //   return;
-    // }
-    // setNotifications(data.notifications.slice())
-  };
-
-  const setNotificationAsRead = async (notificationId) => {
-    console.log(tag, 'get Offer');
-    // nav.navigate(MoreStackScreens.editProfile)
+    await data.getVehicleList(user.sessionToken);
+    setOfferLocation(await AsyncStorage.getItem('offerLocation'));
+    setOfferTime(await AsyncStorage.getItem('offerDate') + ' ' + await AsyncStorage.getItem('offerTime'))
+    if (data.lastStatus === "401") {
+      alert(__('session_expired'));
+      user.logOut();
+      nav.navigate(Screens.logIn);
+      return;
+    }
+    setVehicleList(data.vehicleList)
   };
 
   const getOffer = (id) => {
-    console.log('get Offer', id);
+    setVehicleId(id);
+    if (!offerLocation || !offerTime) {
+      alert('Input Location or Date');
+      nav.navigate(TabStackScreens.doctorStack)
+    }
     setVisible(true);
   }
 
@@ -47,12 +46,12 @@ function useViewModel(props) {
   }
 
   const sentOffer = async () => {
-    if (!userName || !offerLocation || !offerPrice) {
-      alert('Input Valid Values');
+    if (!offerPrice) {
+      alert('Input Offer Price');
       return;
     }
     try {
-      console.log('Offer Successfully Sent')
+      console.log('Offer Successfully Sent', vehicleId, user.fullName, offerLocation, offerTime, offerPrice)
     } catch (e) {
       Alert.alert(
           "Exception",
@@ -68,20 +67,19 @@ function useViewModel(props) {
     }
   }
 
-  useEffect(() => {
+  useEffect( () => {
     fetchData();
   }, []);
 
   return {
     data,
     visible, setVisible,
-    userName, setUserName,
+    vehicleId, setVehicleId,
     offerLocation, setOfferLocation,
     offerTime, setOfferTime,
     offerPrice, setOfferPrice,
-    notifications,setNotifications,
+    vehicleList, setVehicleList,
     fetchData,
-    setNotificationAsRead,
     getOffer,
     modalCancel,
     sentOffer

@@ -5,7 +5,7 @@ import {PermissionsAndroid, Platform} from "react-native";
 import __ from "@/assets/lang";
 import ImagePicker from "react-native-image-picker";
 import {useStores} from "@/hooks";
-import {MoreStackScreens} from "../../constants/Navigation";
+import {MoreStackScreens} from '@/constants/Navigation';
 
 function useViewModel(props) {
   const tag = 'Screens::EditProfile::';
@@ -16,19 +16,8 @@ function useViewModel(props) {
   const [email, setEmail] = useState(user.email);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [password, setPassword] = useState('');
-  const [gender, setGender] = useState(user.gender);
-  const [bloodType, setBloodType] = useState(user.bloodType);
-  const [language, setLanguage] = useState(user.language);
   const [avatarSource, setAvatarSource] = useState(null);
 
-  let bloodTypes = [];
-
-  mockBloodTypes.map(item => {
-    bloodTypes.push({
-      label: item,
-      value: item,
-    })
-  });
 
   const onPressBack = () => {
     console.log(tag, 'onPressBack()');
@@ -97,7 +86,7 @@ function useViewModel(props) {
   const onPressUpdate = async () => {
     console.log(tag, 'onPressUpdate()');
     try {
-      await user.updateProfile(fullName, email, phoneNumber, password, gender, bloodType, language, avatarSource);
+      await user.updateProfile(fullName, email, phoneNumber, password, avatarSource);
       nav.navigate(MoreStackScreens.more);
     } catch (e) {
       console.log(tag, 'UpdateProfile, Ex', e.message);
@@ -114,10 +103,6 @@ function useViewModel(props) {
     email, setEmail,
     phoneNumber, setPhoneNumber,
     password, setPassword,
-    gender, setGender,
-    bloodType, setBloodType,
-    language, setLanguage,
-    bloodTypes,
     onPressBack,
     onPressAvatar,
     onPressUpdate,

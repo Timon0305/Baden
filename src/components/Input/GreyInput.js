@@ -1,4 +1,4 @@
-import React from 'react';
+import  React from 'react';
 import {TextInput, View, StyleSheet, Platform} from 'react-native';
 import Colors from '@/styles/Colors';
 import {scale} from '@/styles/Sizes';

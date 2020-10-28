@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   caption: {
-    color: Colors.blue2,
+    color: Colors.black,
     textAlign: 'center',
     fontSize: heightPercentageToDP('2%'),
   }

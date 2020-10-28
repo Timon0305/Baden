@@ -4,7 +4,7 @@ export default {
   logOut: 'user/logout',
   details: 'user/details',
   pillReminder: 'pill',
-  driverList: 'driverList',
+  driverList: 'driver/getDriverList',
   searchDoctorsByCategory: 'userDoctor/searchDoctorsByCategory',
   searchDoctors: 'userDoctor/searchDoctors',
   userDoctor: 'userDoctor',

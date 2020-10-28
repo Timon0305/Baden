@@ -16,7 +16,6 @@ import dateFormat from 'node-datetime';
 
 const VisaPay = (props) => {
     const vm = useViewModel(props);
-
     return (
         <Container>
             <ScrollBoardWithHeaderLBButton lButtonCaption={__('back')} rButtonCaption={__('')}

@@ -13,14 +13,12 @@ export const PillReminder = types.model('PillReminder', {
     timeToTake: defString,
 });
 
-export const Notification = types.model('Notification', {
+export const VehicleList = types.model('VehicleList', {
     id: types.string,
-    type: types.string,
-    title: types.string,
-    subTitle: types.string,
-    content: types.string,
-    // createdAt: types.string,
-    // updatedAt: types.string,
+    fullName: types.string,
+    carName: types.string,
+    carUrl: types.string,
+    date: types.string,
 });
 
 export const ReviewAuthor = types.model('ReviewAuthor', {
@@ -94,6 +92,7 @@ export default {
     defNumber,
     defObjString,
     PillReminder,
+    VehicleList,
     defPillReminders,
     Doctor,
 };

@@ -22,10 +22,10 @@ const Home = (props) => {
       <BackgroundMaskImage source={Images.background.mask_gradient} resizeMdoe="cover"/>
 
       <View style={styles.container}>
-        <LogoImage/>
+        {/*<LogoImage/>*/}
 
         <Text style={styles.description}>
-          {__('app_desc')}
+          Baden for Client
         </Text>
         <TouchableHighlight style={styles.whiteButton} onPress={vm.onPressSignUp}>
           <Text style={styles.buttonLabel}>
@@ -67,13 +67,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   buttonLabel: {
-    color: Colors.blue2,
+    color: Colors.black,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: hp('2%')
   },
   whiteButton: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#f5f5f5',
     width: wp('90%'),
     height: hp('8%'),
     padding: 18 * scale,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   whiteLabel: {
-    color: '#FFF',
+    color: '#ffffff',
     fontWeight: 'bold',
     marginVertical: hp('2%'),
     fontSize: hp('2%')
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     color: '#FFF',
     justifyContent: 'center',
     textAlign: 'center',
-    fontSize: hp('4%'),
-    marginVertical: hp('2%')
+    fontSize: hp('7%'),
+    marginVertical: hp('8%')
   },
   note: {
     position: 'absolute',

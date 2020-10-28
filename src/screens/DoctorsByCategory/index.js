@@ -23,15 +23,16 @@ import useViewModel from './methods';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Loading from '@/components/Loading';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE,Marker} from 'react-native-maps';
 import GreyInput from '@/components/Input/GreyInput';
 import CalendarPicker from 'react-native-calendar-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SimpleButton from '@/components/Button/SimpleButton';
+import * as datetime from 'node-datetime';
 
 const tag = 'Screens::Search Location';
-const latitudeDelta = 0.025;
-const longitudeDelta = 0.025;
+const latitudeDelta = 0.09;
+const longitudeDelta = 0.09;
 
 const DoctorsByCategory = (props) => {
     const vm = useViewModel(props);
@@ -89,6 +90,7 @@ const DoctorsByCategory = (props) => {
                     <MapView
                         style={styles.locationPicker}
                         initialRegion={vm.myInitialRegion}
+                        provider={PROVIDER_GOOGLE}
                         zoomEnabled={true}
                         pitchEnabled={true}
                         showsUserLocation={true}
@@ -174,10 +176,17 @@ const styles = StyleSheet.create({
         fontSize: hp('2%'),
     },
     locationPicker: {
-        width: hp('100%'),
-        height: hp('100%'),
-        borderRadius: hp('4.5%'),
-        backgroundColor: Colors.grey_dark,
+        width: wp('100%'),
+        height: hp('58%'),
+        // borderRadius: hp('4.5%'),
+        // backgroundColor: Colors.grey_dark,
+    },
+    map: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
     },
     calendarContainer: {
         padding: 3 * scale,

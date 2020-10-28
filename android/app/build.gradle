@@ -214,7 +214,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:[4,5)' // facebook sdk
 //    implementation 'com.facebook.android:facebook-login:[5,6)' // facebook login
 
-//    implementation project(':react-native-maps')
+    implementation project(':react-native-maps')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group: 'com.facebook.fbjni'

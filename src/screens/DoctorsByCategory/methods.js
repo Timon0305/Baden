@@ -2,14 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage'
 import Geocoder from 'react-native-geocoding';
-import {DoctorStackScreens, PillStackScreens, Screens} from '@/constants/Navigation';
+import {DoctorStackScreens, PillStackScreens, Screens, TabStackScreens} from '@/constants/Navigation';
 import {useStores} from '@/hooks';
 import {SPECIALITIES} from '@/constants/MockUpData';
 import Config from '@/config/AppConfig';
 import __ from '@/assets/lang';
 
-const latitudeDelta = 0.025;
-const longitudeDelta = 0.025;
+const latitudeDelta = 0.09;
+const longitudeDelta = 0.09;
 
 function useViewModel(props) {
     const tag = 'Screens::DoctorsByCategory';
@@ -45,9 +45,10 @@ function useViewModel(props) {
         setDate(currentDate);
         if (mode === 'date') {
             setBookDate(currentDate.toDateString());
-            await AsyncStorage.setItem('kk', currentDate.toDateString())
+            await AsyncStorage.setItem('offerDate', currentDate.toDateString())
         } else {
             setBookTime(currentDate.toTimeString())
+            await AsyncStorage.setItem('offerTime', currentDate.toTimeString().split(' ')[0])
         }
     }
 
@@ -65,7 +66,8 @@ function useViewModel(props) {
     }
 
     const getBook = async () => {
-        console.log('my date',await AsyncStorage.getItem('kk'))
+        await AsyncStorage.setItem('offerLocation', address);
+        nav.navigate(TabStackScreens.notifications)
     }
 
     return {

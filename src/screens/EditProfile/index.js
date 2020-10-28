@@ -50,7 +50,7 @@ const EditProfile = (props) => {
                      onChangeText={(val) => vm.setPhoneNumber(val)}/>
           <GreyInput placeholder={__('password')} value={vm.password} onChangeText={(val) => vm.setPassword(val)} secureTextEntry={true}/>
         </KeyboardAvoidingView>
-        <Space height={hp('3%')}></Space>
+        <Space height={hp('3%')}/>
         <TouchableHighlight style={styles.whiteButton} onPress={vm.onPressUpdate} underlayColor={Colors.blue1}>
           <Text style={{textAlign: 'center'}}>
             {__('edit_profile')}

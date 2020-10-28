@@ -9,7 +9,7 @@ export const useGotoMain = (nav) => {
   return () => {
     return () => {
       nav.dispatch(
-        CommonActions.reset({
+          CommanActions.reset({
           index: 0,
           routes: [{name: DoctorStackScreens.doctorsByCategory}],
         }),

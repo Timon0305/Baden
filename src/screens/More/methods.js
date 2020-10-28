@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {DoctorStackScreens, MoreStackScreens, Screens, TabStackScreens} from '@/constants/Navigation';
-import {mockUser} from '@/constants/MockUpData';
+import AsyncStorage from '@react-native-community/async-storage'
 import {useStores} from "@/hooks";
 import __ from '@/assets/lang';
 
@@ -41,6 +41,7 @@ function useViewModel(props) {
   const onPressLogout = async () => {
     // nav.navigate(Screens.home);
     try {
+      await AsyncStorage.clear();
       await user.logOut();
     } catch (e) {
       console.log(tag, 'OnPressLogout, Ex', e.message)

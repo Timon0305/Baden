@@ -1,10 +1,9 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {StyleSheet, Input, Button,TouchableHighlight,KeyboardAvoidingView, View, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, TextInput, Modal, Button,TouchableHighlight,KeyboardAvoidingView, View, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
 import __ from '@/assets/lang';
 import BoardWithHeader from '@/components/Panel/BoardWithHeader';
 import Space from '@/components/Space';
-import Modal from 'react-native-modal';
 import {scale} from '@/styles/Sizes';
 import Colors from "@/styles/Colors";
 import Images from '@/styles/Images';
@@ -17,6 +16,8 @@ import Dialog, { DialogContent, SlideAnimation, DialogButton } from 'react-nativ
 import {mockUser} from '@/constants/MockUpData';
 import {DialogFooter} from 'react-native-popup-dialog/src';
 import GreyInput from '@/components/Input/GreyInput';
+import * as datetime from 'node-datetime';
+import BlueButton from '@/components/Button/BlueButton';
 
 const Notifications = (props) => {
   const vm = useViewModel(props);
@@ -28,11 +29,11 @@ const Notifications = (props) => {
             :
             <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: 50}}>
               <Space height={hp('1%')}/>
-              {vm.notifications && vm.notifications.length ? vm.notifications.map((item, index) => {
+              {vm.vehicleList && vm.vehicleList.length ? vm.vehicleList.map((item, index) => {
                     return (
                         <View key={index} style={{alignSelf: 'stretch', flex: 1}}>
                           <NotificationCard
-                              notification={item}
+                              vehicle={item}
                               key={index}
                               onPress = {() => vm.getOffer(item.id)}
                           />
@@ -46,54 +47,87 @@ const Notifications = (props) => {
                   </Text>
               }
               <Space height={hp('3%')}/>
-              <Dialog
-                visible={vm.visible}
-                width={0.8}
-                overlayOpacity={0.5}
-                onTouchOutside={() => vm.setVisible(false)}
-                dialogAnimation={new SlideAnimation({
-                  slideFrom: 'bottom'
-                })}
-                footer={
-                  <DialogFooter>
-                    <DialogButton
-                        text="CANCEL"
-                        onPress={() => {
-                          vm.modalCancel()
-                        }}
-                    />
-                    <DialogButton
-                        text="OK"
-                        onPress={() => {vm.sentOffer}}
-                    />
-                  </DialogFooter>
-                }
-              >
-                <DialogContent>
-                  <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                    <View>
-                      <Text style={{textAlign: 'center', fontSize: wp('5.8%'), marginTop: hp('2%')}}>Get Offer</Text>
-                    </View>
-                    <Space height={hp('2%')}/>
-                    <View>
-                      <Text>Driver Name</Text>
-                      <GreyInput  placeholder='dirver name' value={vm.userName} onChangeText={(val) => vm.setUserName(val)} />
-                    </View>
-                    <View>
-                      <Text>Offer Location</Text>
-                      <GreyInput placeholder='The Learning Zone' value={vm.offerLocation} onChangeText={(val) => vm.setOfferLocation(val)} />
-                    </View>
-                    <View>
-                      <Text>Offer DateTime</Text>
-                      <GreyInput placeholder='2020-10-12:01:02:03' value={vm.offerTime} onChangeText={(val) => vm.setOfferTime(val)} />
-                    </View>
-                    <View>
-                      <Text>Offer Price</Text>
-                      <GreyInput placeholder='SAR 100' value={vm.offerPrice} onChangeText={(val) => vm.setOfferPrice(val)} />
-                    </View>
-                  </KeyboardAvoidingView>
-                </DialogContent>
-              </Dialog>
+              <View style={styles.container1}>
+                <Modal
+                    animationType = {"slide"}
+                    transparent={false}
+                    visible={vm.visible}
+                    onRequestClose={() => {
+                      vm.modalCancel()
+                    }}>
+                  {vm.vehicleList && vm.vehicleList.length ? vm.vehicleList.map((item, index) => {
+                    if (item.id === vm.vehicleId) {
+                      return (
+                          <View key={index}>
+                            <Image source={{uri: item.carUrl}} style={{width: wp('100%'), height: hp('30%')}}/>
+                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}  style={{padding: wp('5%')}}>
+                              <View style={styles.calendarContainer}>
+                                <View style={styles.leftText}>
+                                  <Text>Driver Name :</Text>
+                                </View>
+                                <View style={styles.rightText}>
+                                  <Text style={{fontSize: hp('2.5%')}}>{item.fullName}</Text>
+                                </View>
+                              </View>
+                              <View style={styles.calendarContainer}>
+                                <View style={styles.leftText}>
+                                  <Text>Vehicle Name :</Text>
+                                </View>
+                                <View style={styles.rightText}>
+                                  <Text style={{fontSize: hp('2.5%')}}>{item.carName}</Text>
+                                </View>
+                              </View>
+                              <View style={styles.calendarContainer}>
+                                <View style={styles.leftText}>
+                                  <Text>Created Date :</Text>
+                                </View>
+                                <View style={styles.rightText}>
+                                  <Text style={{fontSize: hp('2.5%')}}>{datetime.create(item.date).format('f d Y')}</Text>
+                                </View>
+                              </View>
+                              <Separator color={Colors.grey} width={2}/>
+                              <Space height={hp('2%')}/>
+                              <View>
+                                <Text style={{fontSize: hp('2.4%')}}>Offer Location</Text>
+                                <Space height={hp('1%')}/>
+                                <Text>{vm.offerLocation}</Text>
+                              </View>
+                              <Space height={hp('3%')}/>
+                              <View>
+                                <Text style={{fontSize: hp('2.4%')}}>Offer DateTime</Text>
+                                <Space height={hp('1%')}/>
+                                <Text>{vm.offerTime}</Text>
+                              </View>
+                              <Space height={hp('3%')}/>
+                              <Separator color={Colors.grey} width={2}/>
+                              <View style={styles.calendarContainer}>
+                                <View style={styles.leftText}>
+                                  <Text>Offer Price</Text>
+                                </View>
+                                <View style={styles.rightText}>
+                                  <TextInput style={{textAlign: 'right'}} placeholder='SAR 100' value={vm.offerPrice} onChangeText={(val) => vm.setOfferPrice(val)} />
+                                </View>
+                              </View>
+                              <View>
+                                <TouchableHighlight style={styles.whiteButton} onPress={vm.sentOffer} underlayColor={Colors.blue1}>
+                                  <Text style={{textAlign: 'center'}}>
+                                    Sent Offer
+                                  </Text>
+                                </TouchableHighlight>
+                                <Space height={hp('3%')}/>
+                                <Text
+                                    style={{textAlign: 'center'}}
+                                    onPress={() => {
+                                      vm.modalCancel()}}>Close</Text>
+                              </View>
+                            </KeyboardAvoidingView>
+                          </View>
+                      )}
+                     }) : <Text/>
+                  }
+
+                </Modal>
+              </View>
             </ScrollView>
         }
 
@@ -102,13 +136,13 @@ const Notifications = (props) => {
   )
 };
 
-export const NotificationCard = ({notification, onPress}) => {
+export const NotificationCard = ({vehicle, onPress}) => {
   const renderContent = () => {
     return (
         <View style={styles.vehicleDesc} >
-          <Text style={styles.vehicleName} numberOfLines={1}>{notification.vehicleName}</Text>
+          <Text style={styles.vehicleName} numberOfLines={1}>{vehicle.carName}</Text>
           <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
-            <Text>{notification.date}</Text>
+            <Text>{datetime.create(vehicle.date).format('f d Y')}</Text>
             <TouchableOpacity onPress={onPress}>
               <Text>Get Offer</Text>
             </TouchableOpacity>
@@ -121,11 +155,10 @@ export const NotificationCard = ({notification, onPress}) => {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 80
   };
-
   return (
       <View>
         <View style={styles.notificationContainer}>
-          <Image source={notification.image} style={styles.notificationAvatar}/>
+          <Image source={{uri: vehicle.carUrl}} style={styles.notificationAvatar}/>
           {renderContent()}
         </View>
       </View>
@@ -133,6 +166,18 @@ export const NotificationCard = ({notification, onPress}) => {
 };
 
 const styles = StyleSheet.create({
+  calendarContainer: {
+    padding: 5 * scale,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  leftText : {
+    width: wp('30%')
+  },
+  rightText : {
+    width : wp('60%'),
+  },
   sar: {
     position: 'absolute',
     right: 10,
@@ -170,6 +215,22 @@ const styles = StyleSheet.create({
   listSubTitle: {
     fontWeight: 'bold',
     fontSize: wp('5%')
+  },
+  container1: {
+    padding: wp('5%'),
+    width:  wp('80%'),
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  whiteButton: {
+    backgroundColor: '#FFF',
+    width: '100%',
+    padding: hp('1.8%'),
+    borderRadius: hp('0.5%'),
+    borderWidth: 1,
+    borderColor: Colors.blue1,
+    alignContent: 'center',
   },
 });
 

@@ -1,13 +1,14 @@
 import {applySnapshot, flow, types} from "mobx-state-tree";
 import {observable} from "mobx";
 import {isEmpty} from 'lodash';
-import {defNumber, defString, defObjString, PillReminder, Notification, Doctor, Speciality, DoctorDetails} from './Types';
+import {defNumber, defString, defObjString, PillReminder, VehicleList, Doctor, Speciality, DoctorDetails} from './Types';
 import 'mobx-react-lite/batchingForReactDom';
 import * as Api from '@/Services/Api';
 import {Alert} from "react-native";
 import Config from '@/config/AppConfig';
 import ReactNativeAN from "react-native-alarm-notification";
 import __ from '@/assets/lang';
+import {getDriverList} from '@/Services/Api';
 
 const tag = 'MST.Data';
 let statusCode = 0;
@@ -15,7 +16,7 @@ const Data = types
   .model('Data', {
     // doctors: types.frozen,
     pillReminders: types.array(PillReminder),
-    notifications: types.array(Notification),
+    vehicleList: types.array(VehicleList),
     doctors: types.array(Doctor),
     specialities: types.array(Speciality),
     lastStatus: defNumber,
@@ -24,9 +25,10 @@ const Data = types
   })
   .views((self) => ({
 
-    // get getDoctors() {
-    //   return self.doctors;
-    // },
+   get getVehicle() {
+     return self.vehicleList
+   },
+
     get getPills() {
       return self.pillReminders;
     },
@@ -44,8 +46,8 @@ const Data = types
       self.pillReminders = data;
     };
 
-    const _updateNotifications = (data) => {
-      self.notifications = data.notifications;
+    const _updateVehicleList = (data) => {
+      self.vehicleList = data.vehicles;
     };
 
     const _updateSpecialities = (specialities) => {
@@ -101,17 +103,20 @@ const Data = types
       }
     });
 
-    const getNotifications = flow(function* getNotifications(
+    const getVehicleList = flow(function* getVehicleList(
       userToken,
     ) {
       self.setProcessing(true);
       try {
-        const response = yield Api.getNotifications(userToken);
+        const response = yield Api.getDriverList(userToken);
         const {ok, data} = response;
-        self.lastStatus = response.status;
-        console.log(tag, 'Response from GetNotifications API', data);
         if (ok) {
-          _updateNotifications(data);
+          console.log(tag, 'Response from GetNotifications API', data);
+
+          for (let i = 0; i < data.vehicles.length; i++) {
+             data.vehicles[i].carUrl = Config.appBaseUrl + data.vehicles[i].carUrl
+          }
+          _updateVehicleList(data);
         }
         if (!data) {
           alert(__('can_not_connect_server'));
@@ -131,7 +136,7 @@ const Data = types
           alert(__('can_not_connect_server'));
         }
         if (ok) {
-          getNotifications(userToken);
+          getDriverList(userToken);
         }
       } catch (e) {
 
@@ -149,7 +154,6 @@ const Data = types
         const response = yield Api.searchDoctorsByCategory(userToken, category);
         const {ok, data} = response;
         self.lastStatus = response.status;
-        console.log(tag, 'Response from SearchDoctorsByCategory API', data);
         if (ok) {
           _updateDoctors(data);
         }
@@ -297,7 +301,7 @@ const Data = types
 
     return {
       getPillReminders,
-      getNotifications,
+      getVehicleList,
       setNotificationAsRead,
       fetchDoctorsByCategory,
       searchDoctors,
