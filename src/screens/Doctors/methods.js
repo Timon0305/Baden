@@ -68,7 +68,7 @@ function useViewModel(props) {
     setLoading(true);
     try {
       await data.searchDoctors(user.sessionToken, filter.name, filter.speciality, filter.address);
-      if (data.lastStatus == '401') {
+      if (data.lastStatus === '401') {
         nav.navigate(Screens.logIn);
         user.logOut();
         alert(__('session_expired'));
@@ -82,7 +82,7 @@ function useViewModel(props) {
   };
 
   useEffect(() => {
-    if (data.lastStatus == '401') {
+    if (data.lastStatus === '401') {
       nav.navigate(Screens.logIn);
       user.logOut();
       alert(__('session_expired'));

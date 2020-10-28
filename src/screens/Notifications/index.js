@@ -13,7 +13,6 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-nativ
 import Loading from "@/components/Loading";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import Dialog, { DialogContent, SlideAnimation, DialogButton } from 'react-native-popup-dialog';
-import {mockUser} from '@/constants/MockUpData';
 import {DialogFooter} from 'react-native-popup-dialog/src';
 import GreyInput from '@/components/Input/GreyInput';
 import * as datetime from 'node-datetime';
@@ -34,6 +33,7 @@ const Notifications = (props) => {
                         <View key={index} style={{alignSelf: 'stretch', flex: 1}}>
                           <NotificationCard
                               vehicle={item}
+                              data={vm.existedOffer}
                               key={index}
                               onPress = {() => vm.getOffer(item.id)}
                           />
@@ -100,14 +100,6 @@ const Notifications = (props) => {
                               </View>
                               <Space height={hp('3%')}/>
                               <Separator color={Colors.grey} width={2}/>
-                              <View style={styles.calendarContainer}>
-                                <View style={styles.leftText}>
-                                  <Text>Offer Price</Text>
-                                </View>
-                                <View style={styles.rightText}>
-                                  <TextInput style={{textAlign: 'right'}} placeholder='SAR 100' value={vm.offerPrice} onChangeText={(val) => vm.setOfferPrice(val)} />
-                                </View>
-                              </View>
                               <View>
                                 <TouchableHighlight style={styles.whiteButton} onPress={vm.sentOffer} underlayColor={Colors.blue1}>
                                   <Text style={{textAlign: 'center'}}>
@@ -136,25 +128,45 @@ const Notifications = (props) => {
   )
 };
 
-export const NotificationCard = ({vehicle, onPress}) => {
+export const NotificationCard = ({vehicle, onPress, data}) => {
   const renderContent = () => {
-    return (
+    let offered = false;
+    let offeredItem = null;
+    for (let item of data) {
+      if (item.vehicleId === vehicle.id) {
+        offered = true;
+        offeredItem = item;
+        break;
+      }
+    }
+      return (
         <View style={styles.vehicleDesc} >
-          <Text style={styles.vehicleName} numberOfLines={1}>{vehicle.carName}</Text>
+            <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.vehicleName} numberOfLines={1}>{vehicle.carName}</Text>
+            </View>
+
           <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
-            <Text>{datetime.create(vehicle.date).format('f d Y')}</Text>
-            <TouchableOpacity onPress={onPress}>
-              <Text>Get Offer</Text>
-            </TouchableOpacity>
+                  {offeredItem == null ?
+                      <Text>{datetime.create(vehicle.date).format('f d Y')}</Text>
+                      :
+                      <Text>{datetime.create(offeredItem.offerTime).format('f d Y')}</Text>
+                  }
+                    {offeredItem == null ?
+                        <TouchableOpacity onPress={onPress}>
+                            <Text>Get Offer</Text>
+                        </TouchableOpacity>
+                        :
+                    <Text>
+                        <Text style={{color: 'red'}}>{'\u2B24'}</Text>
+                        {' ' + offeredItem.offerStatus}
+                    </Text>
+                    }
           </View>
         </View>
     );
-  };
+  }
 
-  const config = {
-    velocityThreshold: 0.3,
-    directionalOffsetThreshold: 80
-  };
+
   return (
       <View>
         <View style={styles.notificationContainer}>

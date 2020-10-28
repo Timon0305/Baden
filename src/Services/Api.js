@@ -103,7 +103,8 @@ export const getPillReminders = (userToken) => api.get(ApiUrl.pillReminder, {}, 
 
 export const getDriverList = (userToken) => api.get(ApiUrl.driverList, {}, {headers: {userToken}});
 
-export const setNotificationAsRead = (userToken, id) => api.post(ApiUrl.notification + '/' + id, {}, {headers: {userToken}});
+export const setOfferSent = (userToken, vehicleId, offerLocation, offerTime) =>
+    api.post(ApiUrl.offerSend, {vehicleId, offerLocation, offerTime}, {headers: {userToken}});
 
 export const searchDoctorsByCategory = (userToken, category) => api.post(ApiUrl.searchDoctorsByCategory, {category}, {headers: {userToken}});
 

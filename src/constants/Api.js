@@ -3,7 +3,7 @@ export default {
   register: 'user/register',
   logOut: 'user/logout',
   details: 'user/details',
-  pillReminder: 'pill',
+  offerSend: 'driver/offerSent',
   driverList: 'driver/getDriverList',
   searchDoctorsByCategory: 'userDoctor/searchDoctorsByCategory',
   searchDoctors: 'userDoctor/searchDoctors',

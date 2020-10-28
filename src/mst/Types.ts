@@ -5,13 +5,6 @@ import {isString} from 'lodash';
 export const defString = types.optional(types.string, '', [null, undefined]);
 export const defNumber = types.optional(types.number, 0, [null, undefined]);
 export const defObjString = types.optional(types.string, '{}', [null, undefined]);
-export const PillReminder = types.model('PillReminder', {
-    id: defString,
-    medicineName: defString,
-    dosage: defString,
-    frequency: defString,
-    timeToTake: defString,
-});
 
 export const VehicleList = types.model('VehicleList', {
     id: types.string,
@@ -19,6 +12,15 @@ export const VehicleList = types.model('VehicleList', {
     carName: types.string,
     carUrl: types.string,
     date: types.string,
+});
+
+export const OfferSentList = types.model('OfferSentList', {
+    clientId: defString,
+    vehicleId: defString,
+    offerLocation: defString,
+    offerTime: defString,
+    offerStatus: defString,
+    createdAt: defString,
 });
 
 export const ReviewAuthor = types.model('ReviewAuthor', {
@@ -86,13 +88,11 @@ export const DoctorDetails = types.model('DoctorDetails', {
     availableTime: AvailableTime,
 });
 
-export const defPillReminders = types.array(PillReminder);
 export default {
     defString,
     defNumber,
     defObjString,
-    PillReminder,
+    OfferSentList,
     VehicleList,
-    defPillReminders,
     Doctor,
 };

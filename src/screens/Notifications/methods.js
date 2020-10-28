@@ -16,7 +16,7 @@ function useViewModel(props) {
   const [vehicleId, setVehicleId] = useState()
   const [offerLocation, setOfferLocation] = useState('');
   const [offerTime, setOfferTime] = useState('');
-  const [offerPrice, setOfferPrice] = useState('');
+  const [existedOffer, setExistedOffer] = useState('');
   const {user, data} = useStores();
 
   const fetchData = async () => {
@@ -29,6 +29,7 @@ function useViewModel(props) {
       nav.navigate(Screens.logIn);
       return;
     }
+    setExistedOffer(data.offerSentList)
     setVehicleList(data.vehicleList)
   };
 
@@ -42,16 +43,15 @@ function useViewModel(props) {
   }
 
   const modalCancel = () => {
+    setOfferPrice('0')
     setVisible(false)
   }
 
   const sentOffer = async () => {
-    if (!offerPrice) {
-      alert('Input Offer Price');
-      return;
-    }
     try {
-      console.log('Offer Successfully Sent', vehicleId, user.fullName, offerLocation, offerTime, offerPrice)
+      await data.setOfferSent(user.sessionToken, vehicleId,  offerLocation, offerTime);
+      setVisible(false);
+      console.log('response data=>,', data)
     } catch (e) {
       Alert.alert(
           "Exception",
@@ -77,8 +77,8 @@ function useViewModel(props) {
     vehicleId, setVehicleId,
     offerLocation, setOfferLocation,
     offerTime, setOfferTime,
-    offerPrice, setOfferPrice,
     vehicleList, setVehicleList,
+    existedOffer, setExistedOffer,
     fetchData,
     getOffer,
     modalCancel,

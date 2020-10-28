@@ -1,7 +1,7 @@
 import {applySnapshot, flow, types} from "mobx-state-tree";
 import {observable} from "mobx";
 import {isEmpty} from 'lodash';
-import {defNumber, defString, defObjString, PillReminder, VehicleList, Doctor, Speciality, DoctorDetails} from './Types';
+import {defNumber, defString, OfferSentList, VehicleList, Doctor, Speciality, DoctorDetails} from './Types';
 import 'mobx-react-lite/batchingForReactDom';
 import * as Api from '@/Services/Api';
 import {Alert} from "react-native";
@@ -14,10 +14,8 @@ const tag = 'MST.Data';
 let statusCode = 0;
 const Data = types
   .model('Data', {
-    // doctors: types.frozen,
-    pillReminders: types.array(PillReminder),
     vehicleList: types.array(VehicleList),
-    doctors: types.array(Doctor),
+    offerSentList: types.array(OfferSentList),
     specialities: types.array(Speciality),
     lastStatus: defNumber,
     selectedDoctorId: defString,
@@ -50,8 +48,8 @@ const Data = types
       self.vehicleList = data.vehicles;
     };
 
-    const _updateSpecialities = (specialities) => {
-      self.specialities = specialities;
+    const _updateOfferSentList = (data) => {
+      self.offerSentList = data.offers;
     };
 
     const _updateDoctors = (data) => {
@@ -111,12 +109,12 @@ const Data = types
         const response = yield Api.getDriverList(userToken);
         const {ok, data} = response;
         if (ok) {
-          console.log(tag, 'Response from GetNotifications API', data);
-
+          // console.log(tag, 'Response from GetNotifications API', data);
           for (let i = 0; i < data.vehicles.length; i++) {
              data.vehicles[i].carUrl = Config.appBaseUrl + data.vehicles[i].carUrl
           }
           _updateVehicleList(data);
+          _updateOfferSentList(data)
         }
         if (!data) {
           alert(__('can_not_connect_server'));
@@ -127,21 +125,22 @@ const Data = types
       }
     });
 
-    const setNotificationAsRead = flow(function* (userToken, notificationId) {
+    const setOfferSent = flow(function* setOfferSent(userToken, vehicleId, offerLocation, offerTime) {
       self.setProcessing(true);
       try {
-        const response = yield Api.setNotificationAsRead(userToken, notificationId);
+        const response = yield Api.setOfferSent(userToken, vehicleId, offerLocation, offerTime);
         const {ok, data} = response;
         if (!data) {
           alert(__('can_not_connect_server'));
         }
         if (ok) {
-          getDriverList(userToken);
+          console.log('offer response => +++++++', data);
+          _updateOfferSentList(data)
         }
       } catch (e) {
 
       } finally {
-        self.setProcessing(true);
+        self.setProcessing(false);
       }
     });
 
@@ -302,7 +301,7 @@ const Data = types
     return {
       getPillReminders,
       getVehicleList,
-      setNotificationAsRead,
+      setOfferSent,
       fetchDoctorsByCategory,
       searchDoctors,
       selectDoctor,
