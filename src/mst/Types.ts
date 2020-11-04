@@ -32,7 +32,6 @@ export const OfferSentList = types.model('OfferSentList', {
     offerTime: defString,
     offerPrice: defString,
     offerStatus: defString,
-    createdAt: defString,
 });
 
 export const ReviewAuthor = types.model('ReviewAuthor', {

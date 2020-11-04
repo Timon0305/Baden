@@ -47,7 +47,7 @@ function useViewModel(props) {
       nav.navigate(Screens.logIn);
       return;
     }
-    // setExistedOffer(data.offerSentList)
+    setExistedOffer(data.offerSentList)
     setVehicleList(data.vehicleList);
     setOfferLocation(offerLocation);
     setSpendingTime(await AsyncStorage.getItem('spendingTime'));
@@ -73,7 +73,8 @@ function useViewModel(props) {
     try {
       await data.setOfferSent(user.sessionToken, offerId,  offerLocation, startDate, offerGeocoder, spendingTime);
       setVisible(false);
-      console.log('response data=>,', data)
+      console.log('response data=>,', data.offerSentList);
+      setExistedOffer(data.offerSentList)
     } catch (e) {
       Alert.alert(
           "Exception",
@@ -89,8 +90,12 @@ function useViewModel(props) {
     }
   }
 
-  const handleDelete = (id) => {
-    console.log(id)
+  const handleAccept = (id) => {
+    console.log("accepted =>", id)
+  }
+
+  const handleReject = (id) => {
+    console.log("rejected => ",id)
   }
 
   useEffect( () => {
@@ -112,7 +117,8 @@ function useViewModel(props) {
     getOffer,
     modalCancel,
     sentOffer,
-    handleDelete
+    handleAccept,
+    handleReject,
   }
 }
 

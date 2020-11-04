@@ -91,7 +91,7 @@ const Data = types
              data.vehicles[i].carUrl = Config.appBaseUrl + data.vehicles[i].carUrl
           }
           _updateVehicleList(data);
-          // _updateOfferSentList(data)
+          _updateOfferSentList(data)
         }
         if (!data) {
           alert(__('can_not_connect_server'));

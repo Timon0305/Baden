@@ -7,29 +7,28 @@ import {
     Button,
     TouchableHighlight,
     KeyboardAvoidingView,
+    LayoutAnimation,
+    Platform,
+    UIManager,
     View,
     ScrollView,
     Text,
     TouchableOpacity,
     Image,
+    Animated
 } from 'react-native';
 import __ from '@/assets/lang';
 import BoardWithHeader from '@/components/Panel/BoardWithHeader';
 import Space from '@/components/Space';
 import {scale} from '@/styles/Sizes';
 import Colors from '@/styles/Colors';
-import Images from '@/styles/Images';
 import Separator from '@/components/Separator';
 import useViewModel from './methods';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Loading from '@/components/Loading';
-import Swipeable from 'react-native-swipeable';
-import Dialog, {DialogContent, SlideAnimation, DialogButton} from 'react-native-popup-dialog';
-import {DialogFooter} from 'react-native-popup-dialog/src';
-import GreyInput from '@/components/Input/GreyInput';
-import * as datetime from 'node-datetime';
-import BlueButton from '@/components/Button/BlueButton';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {RectButton} from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 const latitudeDelta = 0.09;
 const longitudeDelta = 0.09;
@@ -88,7 +87,8 @@ const Notifications = (props) => {
                                         data={vm.existedOffer}
                                         key={index}
                                         onPress={() => vm.getOffer(item.id)}
-                                        handleDelete={() => vm.handleDelete(item.id)}
+                                        handleReject={() => vm.handleReject(item.id)}
+                                        handleAccept={ () => vm.handleAccept(item.id)}
                                     />
                                     <Separator color={Colors.grey} width={2}/>
                                 </View>
@@ -227,7 +227,7 @@ const Notifications = (props) => {
     );
 };
 
-export const NotificationCard = ({vehicle, onPress, data, handleDelete}) => {
+export const NotificationCard = ({vehicle, onPress, data, handleAccept, handleReject}) => {
     const renderContent = () => {
         let offered = false;
         let offeredItem = null;
@@ -242,10 +242,9 @@ export const NotificationCard = ({vehicle, onPress, data, handleDelete}) => {
             <View style={styles.vehicleDesc}>
                 <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.vehicleName} numberOfLines={1}>{vehicle.vehicleName}</Text>
-                    {offeredItem == null ?
-                        <Text/>
-                        :
-                        <Text>{'SAR ' +  offeredItem.offerPrice}</Text>
+                    {offeredItem !== null ?
+                        <Text>{'SAR ' + offeredItem.offerPrice}</Text>
+                        : <Text/>
                     }
                 </View>
 
@@ -269,27 +268,61 @@ export const NotificationCard = ({vehicle, onPress, data, handleDelete}) => {
             </View>
         );
     };
-    const leftContent = <Text>Pull to activate</Text>;
-    const rightButtons = [
-        <TouchableHighlight
-            style={{
-                backgroundColor: 'red',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-                width: wp('30%')
-            }}
-            onPress={handleDelete}
-        >
-        </TouchableHighlight>
-    ];
+
+    const renderLeftActions = (progress, dragX) => {
+        const trans = dragX.interpolate({
+            inputRange: [0, 50, 100, 101],
+            outputRange: [-20, 0, 0, 1]
+        });
+        return (
+            <RectButton onPress={handleAccept}>
+                <Animated.Text
+                    style={[styles.text,{transform: [{translateX: trans}]}]}
+                >
+                    Accept
+                </Animated.Text>
+            </RectButton>
+        )
+    }
+
+    const renderRightActions = (progress, dragX) => {
+        const trans = dragX.interpolate({
+            inputRange: [0, 50, 100, 101],
+            outputRange: [0, 0, 0, 1]
+        });
+        return (
+            <RectButton onPress={handleReject}>
+                <Animated.Text
+                    style={[styles.text1,{transform: [{translateX: trans}]}]}
+                >
+                    Reject
+                </Animated.Text>
+            </RectButton>
+        )
+    }
 
     return (
         <View>
-            <View style={styles.notificationContainer}>
-                <Image source={{uri: vehicle.carUrl}} style={styles.notificationAvatar}/>
-                {renderContent()}
-            </View>
+            {data && data.length ?  data.map((item, index) => {
+                console.log(item.offerStatus)
+              if (item.offerStatus === 'Response') {
+                  return (
+                      <Swipeable key={index} renderLeftActions={renderLeftActions}
+                                 renderRightActions={renderRightActions}
+                      >
+                          <View style={styles.notificationContainer}>
+                              <Image source={{uri: vehicle.carUrl}} style={styles.notificationAvatar}/>
+                              {renderContent()}
+                          </View>
+                      </Swipeable>
+                  )
+              }
+            }) :
+                <View style={styles.notificationContainer}>
+                    <Image source={{uri: vehicle.carUrl}} style={styles.notificationAvatar}/>
+                    {renderContent()}
+                </View>
+            }
         </View>
     );
 };
@@ -316,8 +349,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: wp('100%'),
-        // alignSelf: 'stretch',
-        // backgroundColor: '#666',
     },
     notificationContainer: {
         flex: 1,
@@ -367,6 +398,39 @@ const styles = StyleSheet.create({
         width: wp('100%'),
         height: hp('50%'),
     },
+    row: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        padding: 15
+    },
+    text: {
+        fontWeight: 'bold',
+        color: "red",
+        paddingTop: hp('5%'),
+        textAlign: 'center',
+        fontSize: 14,
+        paddingRight: wp('3%')
+    },
+    text1: {
+        fontWeight: 'bold',
+        color: "black",
+        paddingTop: hp('5%'),
+        textAlign: 'center',
+        fontSize: 14,
+        paddingLeft: wp('3%')
+    },
+    underlayRight: {
+        flex: 1,
+        backgroundColor:  'teal',
+        justifyContent: 'flex-start'
+    },
+    underlayLeft: {
+        flex: 1,
+        backgroundColor: 'tomato',
+        justifyContent: 'flex-end'
+    }
 });
 
 export default observer(Notifications);
