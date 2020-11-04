@@ -29,6 +29,7 @@ import CalendarPicker from 'react-native-calendar-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SimpleButton from '@/components/Button/SimpleButton';
 import * as datetime from 'node-datetime';
+import DropDownPicker from "react-native-dropdown-picker";
 
 const tag = 'Screens::Search Location';
 const latitudeDelta = 0.09;
@@ -42,15 +43,15 @@ const DoctorsByCategory = (props) => {
             {vm.data.isProcessing ?
                 <Loading/>
                 :
-                <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: 50}}>
+                <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: 40}}>
                     <View style={styles.calendarContainer}>
                         <TextInput style={{color: '#841584'}} value={vm.address}/>
                     </View>
                     <View style={styles.calendarContainer}>
-                       <View style={{width: wp('50')}}>
-                           <SimpleButton onPress={vm.showDatepicker} caption='Pick Date' >
-                           </SimpleButton>
-                       </View>
+                        <View style={{width: wp('50')}}>
+                            <SimpleButton onPress={vm.showDatepicker} caption='Pick Date' >
+                            </SimpleButton>
+                        </View>
                         <View style={{width: wp('50')}}>
                             {!vm.bookDate ? (
                                 <TextInput value={new Date().toDateString()}/>
@@ -71,22 +72,19 @@ const DoctorsByCategory = (props) => {
                             )}
                         </View>
                     </View>
+                    <Space height={wp('1%')}/>
+                    <View style={styles.calendarContainer}>
+                        <View style={{width: wp('50')}}>
+                            <SimpleButton caption='Spending Time'  />
+                        </View>
+                        <View style={{width: wp('50'), paddingRight: wp('5%')}}>
+                            <TextInput placeholder='Spending Time' value={vm.spendingTime} onChangeText={vm.setSpendingTime}/>
+                        </View>
+                    </View>
+                    <Space height={wp('1%')}/>
                     <View style={styles.container}>
                         <Button color='#841584' onPress={vm.getBook} title='book'/>
                     </View>
-
-                    {vm.show && (
-                        <DateTimePicker
-                            testID="dateTimePicker"
-                            value={vm.date}
-                            mode={vm.mode}
-                            is24Hour={true}
-                            minimumDate={new Date()}
-                            display="spinner"
-                            onChange={vm.onChange}
-                        />
-                    )}
-
                     <MapView
                         style={styles.locationPicker}
                         initialRegion={vm.myInitialRegion}
@@ -108,8 +106,18 @@ const DoctorsByCategory = (props) => {
                             title={vm.address}
                         />
                     </MapView>
-                    <Space height={wp('2%')}/>
 
+                    {vm.show && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={vm.date}
+                            mode={vm.mode}
+                            is24Hour={true}
+                            minimumDate={new Date()}
+                            display="spinner"
+                            onChange={vm.onChange}
+                        />
+                    )}
                 </ScrollView>
             }
         </BoardWithHeader>
@@ -177,7 +185,7 @@ const styles = StyleSheet.create({
     },
     locationPicker: {
         width: wp('100%'),
-        height: hp('58%'),
+        height: hp('100%'),
         // borderRadius: hp('4.5%'),
         // backgroundColor: Colors.grey_dark,
     },
@@ -189,7 +197,7 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     calendarContainer: {
-        padding: 3 * scale,
+        // padding: 3 * scale,
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',

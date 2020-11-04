@@ -2,7 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage'
 import Geocoder from 'react-native-geocoding';
-import {DoctorStackScreens, PillStackScreens, Screens, TabStackScreens} from '@/constants/Navigation';
+import {
+    DoctorStackScreens,
+    PillStackScreens,
+    Screens,
+    TabStackScreens,
+    VehicleListScreens,
+} from '@/constants/Navigation';
 import {useStores} from '@/hooks';
 import {SPECIALITIES} from '@/constants/MockUpData';
 import Config from '@/config/AppConfig';
@@ -28,8 +34,11 @@ function useViewModel(props) {
     const [bookTime, setBookTime] = useState('');
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState(MODE.DATE);
+    const [spendingTime, setSpendingTime] = useState();
     const [show, setShow] = useState(false);
     const {user, data} = useStores();
+
+    let carTypes = [];
 
     useEffect(() => {
         Geocoder.init('AIzaSyD8OJWvqCanCoFm8ZQM8YFOaxIlAHwUIcQ');
@@ -37,7 +46,7 @@ function useViewModel(props) {
             .then(json => {
                 setAddress(json.results[0].formatted_address);
             });
-    });
+    } );
 
     const onChange = async (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -66,8 +75,14 @@ function useViewModel(props) {
     }
 
     const getBook = async () => {
+        if (!spendingTime) {
+            alert('Input your spending time');
+            return false
+        }
+        await AsyncStorage.setItem('spendingTime', spendingTime);
         await AsyncStorage.setItem('offerLocation', address);
-        nav.navigate(TabStackScreens.notifications)
+        await AsyncStorage.setItem('latlng', myInitialRegion.latitude + ',' + myInitialRegion.longitude)
+        nav.navigate(TabStackScreens.vehicleLists)
     }
 
     return {
@@ -79,12 +94,14 @@ function useViewModel(props) {
         bookDate, setBookDate,
         bookTime, setBookTime,
         MODE,
+        spendingTime, setSpendingTime,
         myInitialRegion, setMyInitialRegion,
         showDatepicker,
         showTimepicker,
         showMode,
         onChange,
-        getBook
+        getBook,
+        carTypes
     };
 }
 

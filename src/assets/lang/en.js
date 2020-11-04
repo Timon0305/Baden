@@ -31,7 +31,7 @@ const en = {
   'submit': 'Submit',
 
   'driver_search': 'Search',
-  'driver_list': 'List',
+  'driver_list': 'Vehicle List',
   'results_found': 'result found',
   'ratings': 'ratings',
 

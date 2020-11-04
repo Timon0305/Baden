@@ -3,7 +3,14 @@ import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {MoreStackScreens, DoctorStackScreens, TabStackScreens, Screens, PillStackScreens} from '@/constants/Navigation';
+import {
+    MoreStackScreens,
+    DoctorStackScreens,
+    TabStackScreens,
+    Screens,
+    PillStackScreens,
+    VehicleListScreens,
+} from '@/constants/Navigation';
 
 import Home from '@/screens/Home';
 import SignUp from '@/screens/SignUp';
@@ -19,6 +26,7 @@ import ContactUs from '@/screens/ContactUs';
 import MyProfile from '@/screens/MyProfile';
 import EditProfile from '@/screens/EditProfile';
 import PillReminder from '@/screens/PillReminder';
+import VehicleLists from '@/screens/VehicleLists';
 import Notifications from '@/screens/Notifications';
 import VisaPay from '@/screens/VisaPay';
 import MasterPay from '@/screens/MasterPay';
@@ -32,6 +40,7 @@ import __ from '@/assets/lang';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
+
 const tag = 'Route::index';
 
 const Stack = createStackNavigator();
@@ -74,8 +83,8 @@ function TabStack() {
         }}
       />
       <Tab.Screen
-        name={TabStackScreens.notifications}
-        component={Notifications}
+        name={TabStackScreens.vehicleLists}
+        component={VehicleStack}
         options={{
           title: __(TabStackScreens.notifications),
           tabBarIcon: ({color, size}) => (
@@ -89,8 +98,9 @@ function TabStack() {
         options={{
           title: __('payment'),
           tabBarIcon: ({color, size}) => (
-            <Icon name={'google-wallet'} color={color} size={size}
-                                   style={{transform: [/*{rotateX: '180deg'},*/{rotate: '90deg'},/*{rotateZ: '180deg'}*/]}}/>
+            <Icon name={'google-wallet'}
+                  color={color} size={size}
+                  style={{transform: [{rotate: '90deg'}]}}/>
           ),
         }}
       />
@@ -133,6 +143,19 @@ function DoctorStack() {
   )
 }
 
+function VehicleStack() {
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false,
+                gestureEnabled: false,
+            }}>
+                <Stack.Screen name={VehicleListScreens.vehicleLists} component={VehicleLists} />
+                <Stack.Screen name={VehicleListScreens.individualItem} component={Notifications} />
+        </Stack.Navigator>
+    )
+}
+
 function PillReminderStack() {
   return (
     <Stack.Navigator
@@ -140,7 +163,7 @@ function PillReminderStack() {
         headerShown: false,
         gestureEnabled: false,
       }}>
-      <Stack.Screen name={PillStackScreens.pillReminder} component={PillReminder}/>
+        <Stack.Screen name={PillStackScreens.pillReminder} component={PillReminder}/>
         <Stack.Screen name={PillStackScreens.visaPay} component={VisaPay}/>
         <Stack.Screen name={PillStackScreens.madaPay} component={MadaPay}/>
         <Stack.Screen name={PillStackScreens.masterPay} component={MasterPay}/>

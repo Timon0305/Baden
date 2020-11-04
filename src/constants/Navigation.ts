@@ -18,6 +18,7 @@ export const Screens = {
 
     pillReminders: 'PillReminders', // 10
 
+    vehicleLists: "VehicleLists",
     notifications: 'Notifications', // 13
 
     more: 'More', // 14
@@ -31,10 +32,16 @@ export const Screens = {
 
 export const TabStackScreens = {
     doctorStack: 'DoctorStack',
-    notifications: 'List',
+    vehicleLists: 'List',
+    // notifications: 'List',
     pillReminderStack: 'PillReminderStack', // 10, 11
     moreStack: 'MoreStack',
 };
+
+export const VehicleListScreens = {
+    vehicleLists: 'VehicleLists',
+    individualItem : 'Notifications'
+}
 
 export const DoctorStackScreens = {
     doctorsByCategory: 'DoctorsByCategory', // 16

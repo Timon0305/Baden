@@ -5,37 +5,60 @@ import AsyncStorage from '@react-native-community/async-storage'
 import {useStores} from "@/hooks";
 import __ from '@/assets/lang';
 
+const latitudeDelta = 0.09;
+const longitudeDelta = 0.09;
 
 function useViewModel(props) {
   const tag = 'Screens::Notification';
 
   const nav = useNavigation(props);
 
+  const [myLocation, setMyLocation] = useState({
+    latitude: 24.774265,
+    longitude: 46.738586,
+    latitudeDelta: latitudeDelta,
+    longitudeDelta: longitudeDelta,
+  })
   const [vehicleList, setVehicleList] = useState();
   const [visible, setVisible] = useState(false);
-  const [vehicleId, setVehicleId] = useState()
+  const [offerId, setOfferId] = useState();
   const [offerLocation, setOfferLocation] = useState('');
-  const [offerTime, setOfferTime] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [offerGeocoder, setOfferGeocoder] = useState('');
   const [existedOffer, setExistedOffer] = useState('');
+  const [spendingTime, setSpendingTime] = useState('');
   const {user, data} = useStores();
 
   const fetchData = async () => {
-    await data.getVehicleList(user.sessionToken);
-    setOfferLocation(await AsyncStorage.getItem('offerLocation'));
-    setOfferTime(await AsyncStorage.getItem('offerDate') + ' ' + await AsyncStorage.getItem('offerTime'))
+    const offerLocation = await AsyncStorage.getItem('offerLocation');
+    const vehicleId = await AsyncStorage.getItem('vehicleId');
+    const geoCoder = await AsyncStorage.getItem('latlng');
+    setMyLocation({
+      latitude: parseFloat(geoCoder.split(',')[0]),
+      longitude: parseFloat(geoCoder.split(',')[1]),
+      latitudeDelta: latitudeDelta,
+      longitudeDelta: longitudeDelta,
+    })
+    await data.getVehicleList(user.sessionToken, vehicleId, geoCoder);
+
     if (data.lastStatus === "401") {
       alert(__('session_expired'));
       user.logOut();
       nav.navigate(Screens.logIn);
       return;
     }
-    setExistedOffer(data.offerSentList)
-    setVehicleList(data.vehicleList)
+    // setExistedOffer(data.offerSentList)
+    setVehicleList(data.vehicleList);
+    setOfferLocation(offerLocation);
+    setSpendingTime(await AsyncStorage.getItem('spendingTime'));
+    setVisible(await AsyncStorage.getItem('vehicleId'))
+    setOfferGeocoder(await AsyncStorage.getItem('latlng'));
+    setStartDate(await AsyncStorage.getItem('offerDate') + ' ' + await AsyncStorage.getItem('offerTime'));
   };
 
   const getOffer = (id) => {
-    setVehicleId(id);
-    if (!offerLocation || !offerTime) {
+    setOfferId(id);
+    if (!offerLocation || !startDate) {
       alert('Input Location or Date');
       nav.navigate(TabStackScreens.doctorStack)
     }
@@ -43,13 +66,12 @@ function useViewModel(props) {
   }
 
   const modalCancel = () => {
-    setOfferPrice('0')
     setVisible(false)
   }
 
   const sentOffer = async () => {
     try {
-      await data.setOfferSent(user.sessionToken, vehicleId,  offerLocation, offerTime);
+      await data.setOfferSent(user.sessionToken, offerId,  offerLocation, startDate, offerGeocoder, spendingTime);
       setVisible(false);
       console.log('response data=>,', data)
     } catch (e) {
@@ -67,22 +89,30 @@ function useViewModel(props) {
     }
   }
 
+  const handleDelete = (id) => {
+    console.log(id)
+  }
+
   useEffect( () => {
     fetchData();
   }, []);
 
   return {
     data,
+    myLocation, setMyLocation,
     visible, setVisible,
-    vehicleId, setVehicleId,
+    offerId, setOfferId,
     offerLocation, setOfferLocation,
-    offerTime, setOfferTime,
+    startDate, setStartDate,
+    offerGeocoder, setOfferGeocoder,
     vehicleList, setVehicleList,
     existedOffer, setExistedOffer,
+    spendingTime, setSpendingTime,
     fetchData,
     getOffer,
     modalCancel,
-    sentOffer
+    sentOffer,
+    handleDelete
   }
 }
 

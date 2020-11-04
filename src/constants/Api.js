@@ -5,6 +5,7 @@ export default {
   details: 'user/details',
   offerSend: 'driver/offerSent',
   driverList: 'driver/getDriverList',
+  getVehicleName: 'driver/getVehicleName',
   searchDoctorsByCategory: 'userDoctor/searchDoctorsByCategory',
   searchDoctors: 'userDoctor/searchDoctors',
   userDoctor: 'userDoctor',

@@ -6,19 +6,31 @@ export const defString = types.optional(types.string, '', [null, undefined]);
 export const defNumber = types.optional(types.number, 0, [null, undefined]);
 export const defObjString = types.optional(types.string, '{}', [null, undefined]);
 
+export const VehicleName = types.model('VehicleName', {
+    id: types.string,
+    name: types.string,
+    carUrl: types.string,
+    number: types.number
+})
+
 export const VehicleList = types.model('VehicleList', {
     id: types.string,
-    fullName: types.string,
-    carName: types.string,
+    name: types.string,
+    vehicleName: types.string,
     carUrl: types.string,
-    date: types.string,
+    address: types.string,
+    location: types.string,
+    distance: types.string,
+    duration: types.string,
 });
 
 export const OfferSentList = types.model('OfferSentList', {
     clientId: defString,
     vehicleId: defString,
     offerLocation: defString,
+    offerGeocoder: defString,
     offerTime: defString,
+    offerPrice: defString,
     offerStatus: defString,
     createdAt: defString,
 });

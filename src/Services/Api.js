@@ -99,12 +99,12 @@ export const _updateProfile = async (
 export const updateProfile = (userToken, fullName, email, phoneNumber, password,  avatarUrl) =>
   api.post(ApiUrl.details, {fullName, email, phoneNumber, password,  avatarUrl}, {headers: {userToken}});
 
-export const getPillReminders = (userToken) => api.get(ApiUrl.pillReminder, {}, {headers: {userToken}});
+export const getVehicleName = (userToken) => api.get(ApiUrl.getVehicleName, {}, {headers: {userToken}});
 
-export const getDriverList = (userToken) => api.get(ApiUrl.driverList, {}, {headers: {userToken}});
+export const getDriverList = (userToken, vehicleId, geoCoder) => api.post(ApiUrl.driverList, {vehicleId, geoCoder}, {headers: {userToken}});
 
-export const setOfferSent = (userToken, vehicleId, offerLocation, offerTime) =>
-    api.post(ApiUrl.offerSend, {vehicleId, offerLocation, offerTime}, {headers: {userToken}});
+export const setOfferSent = (userToken, vehicleId, offerLocation, offerTime, offerGeocoder, spendingTime) =>
+    api.post(ApiUrl.offerSend, {vehicleId, offerLocation, offerTime, offerGeocoder, spendingTime}, {headers: {userToken}});
 
 export const searchDoctorsByCategory = (userToken, category) => api.post(ApiUrl.searchDoctorsByCategory, {category}, {headers: {userToken}});
 
