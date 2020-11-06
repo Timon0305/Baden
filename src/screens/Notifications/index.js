@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     },
     locationPicker: {
         width: wp('100%'),
-        height: hp('50%'),
+        height: hp('40%'),
     },
     row: {
         flexDirection: 'row',

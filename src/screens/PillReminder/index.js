@@ -14,35 +14,32 @@ import ImageButton from "@/components/Button/ImageButton";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 import * as util from '@/utils/String';
 import Loading from "@/components/Loading";
-import dateFormat from 'node-datetime';
+import Carousel from 'react-native-snap-carousel'
 
 const PillReminder = (props) => {
-  const vm = useViewModel(props);
+    const vm = useViewModel(props);
 
-  return (
-      <BoardWithHeader title={__('payment')} onSwipeUp={vm.fetchCard}>
-          {vm.data.isProcessing ?
-              <Loading/>
-              :
-              <ScrollView style={styles.container}>
-                  <Text style={styles.note}>
-                      Select Card
-                  </Text>
-                  {vm.myCard && vm.myCard.length > 0 &&
-                  vm.myCard.map((item, index) => {
-                      return (
-                          <View style={styles.categoryLine} key={index}>
-                              <CardButton image={item.image} caption={item.title}
-                                          onPress={() => {vm.selectCard(item.id)}}/>
-                          </View>
-                      )
-                  })
-                  }
-                  <Space height={hp('10%')}/>
-              </ScrollView>
-          }
-      </BoardWithHeader>
-  )
+    return (
+        <BoardWithHeader title={__('payment')} onSwipeUp={vm.fetchCard}>
+            {vm.data.isProcessing ?
+                <Loading/>
+                :
+                <ScrollView style={styles.container}>
+                    {vm.myCard && vm.myCard.length > 0 &&
+                    vm.myCard.map((item, index) => {
+                        return (
+                            <View style={styles.categoryLine} key={index}>
+                                <CardButton image={item.image} caption={item.title}
+                                            onPress={() => {vm.selectCard(item.id)}}/>
+                            </View>
+                        )
+                    })
+                    }
+                    <Space height={hp('10%')}/>
+                </ScrollView>
+            }
+        </BoardWithHeader>
+    )
 };
 
 export const CardButton = ({image, caption, onPress}) => {
@@ -50,14 +47,14 @@ export const CardButton = ({image, caption, onPress}) => {
     const cbStyles = StyleSheet.create({
         container: {
             width: buttonWidth,
-            height: wp('80%'),
+            // height: wp('80%'),
             flexDirection: 'column',
             justifyContent: 'space-evenly',
             alignItems: 'center',
-            elevation: 10,
+            elevation: 2,
             shadowColor: '#ddd',
             shadowRadius: wp('20%'),
-            borderRadius: wp('10%'),
+            borderRadius: wp('3%'),
             shadowOpacity: 0.4,
             backgroundColor: Colors.white2,
             marginVertical: wp('3%')
@@ -77,9 +74,6 @@ export const CardButton = ({image, caption, onPress}) => {
     return (
         <TouchableOpacity style={cbStyles.container} onPress={onPress}>
             <Image source={image} style={cbStyles.image} resizeMode={'contain'}/>
-            <Text style={cbStyles.caption}>
-                {caption}
-            </Text>
         </TouchableOpacity>
     )
 }
