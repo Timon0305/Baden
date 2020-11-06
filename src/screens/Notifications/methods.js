@@ -22,11 +22,13 @@ function useViewModel(props) {
   const [vehicleList, setVehicleList] = useState();
   const [visible, setVisible] = useState(false);
   const [offerId, setOfferId] = useState();
+  const [vehicleId, setVehicleId] = useState('')
   const [offerLocation, setOfferLocation] = useState('');
   const [startDate, setStartDate] = useState('');
   const [offerGeocoder, setOfferGeocoder] = useState('');
   const [existedOffer, setExistedOffer] = useState('');
   const [spendingTime, setSpendingTime] = useState('');
+  const [offerStatus, setOfferStatus] = useState(false);
   const {user, data} = useStores();
 
   const fetchData = async () => {
@@ -54,6 +56,14 @@ function useViewModel(props) {
     setVisible(await AsyncStorage.getItem('vehicleId'))
     setOfferGeocoder(await AsyncStorage.getItem('latlng'));
     setStartDate(await AsyncStorage.getItem('offerDate') + ' ' + await AsyncStorage.getItem('offerTime'));
+    setVehicleId (await AsyncStorage.getItem('vehicleId'));
+
+    for (let item of data.offerSentList) {
+      if (item.offerStatus === 'Accept') {
+        setOfferStatus(true);
+      }
+    }
+
   };
 
   const getOffer = (id) => {
@@ -90,8 +100,25 @@ function useViewModel(props) {
     }
   }
 
-  const handleAccept = (id) => {
-    console.log("accepted =>", id)
+  const getAllOffer = async (vehicleId) => {
+    await data.getAllOffer(user.sessionToken, vehicleId, offerLocation, startDate, offerGeocoder, spendingTime)
+  }
+
+  const handleAccept = async (id) => {
+    for (let item of existedOffer) {
+      if (item.vehicleId === id) {
+        const price = item.offerPrice;
+        if (!price) {
+          alert("You have to send request")
+        }
+        if (parseInt(price) > 0) {
+          await data.offerAccept(user.sessionToken, id);
+          setExistedOffer(data.offerSentList)
+        } else {
+          alert("You didn't receive response")
+        }
+      }
+    }
   }
 
   const handleReject = (id) => {
@@ -107,18 +134,21 @@ function useViewModel(props) {
     myLocation, setMyLocation,
     visible, setVisible,
     offerId, setOfferId,
+    vehicleId, setVehicleId,
     offerLocation, setOfferLocation,
     startDate, setStartDate,
     offerGeocoder, setOfferGeocoder,
     vehicleList, setVehicleList,
     existedOffer, setExistedOffer,
     spendingTime, setSpendingTime,
+    offerStatus, setOfferStatus,
     fetchData,
     getOffer,
     modalCancel,
     sentOffer,
     handleAccept,
     handleReject,
+    getAllOffer
   }
 }
 

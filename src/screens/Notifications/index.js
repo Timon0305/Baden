@@ -41,7 +41,7 @@ const Notifications = (props) => {
             {vm.data.isProcessing ?
                 <Loading/>
                 :
-                <View style={styles.container} contentContainerStyle={{paddingBottom: 50}}>
+                <View style={styles.container} contentContainerStyle={{paddingBottom: 0}}>
                     <MapView
                         style={styles.locationPicker}
                         region={vm.myLocation}
@@ -78,6 +78,11 @@ const Notifications = (props) => {
                             pinColor={'red'}
                         />}
                     </MapView>
+                    {vm.offerStatus === 'false' ? <View >
+                        <Button color='#841584' onPress={() => vm.getAllOffer(vm.vehicleId)}  title='Get All Offer' />
+                    </View> : <View >
+                        <Button color='#841584' onPress={() => vm.getAllOffer(vm.vehicleId)}  title='Get All Offer' disabled />
+                    </View>}
                     <ScrollView>
                     {vm.vehicleList && vm.vehicleList.length ? vm.vehicleList.map((item, index) => {
                             return (
@@ -198,7 +203,7 @@ const Notifications = (props) => {
                                                                         onPress={vm.sentOffer}
                                                                         underlayColor={Colors.blue1}>
                                                         <Text style={{textAlign: 'center'}}>
-                                                            Sent Offer
+                                                            Get Offer
                                                         </Text>
                                                     </TouchableHighlight>
                                                     <Space height={hp('2%')}/>
@@ -259,7 +264,11 @@ export const NotificationCard = ({vehicle, onPress, data, handleAccept, handleRe
                         <Text>
                             {offeredItem.offerStatus === 'Request' ?
                                 <Text style={{color: 'red'}}>{'\u2B24'}</Text> :
-                                <Text style={{color: 'blue'}}>{'\u2B24'}</Text>
+                               offeredItem.offerStatus === 'Response' ?
+                                   <Text style={{color: 'blue'}}>{'\u2B24'}</Text> :
+                                   offeredItem.offerStatus === "Accept" ?
+                                       <Text style={{color: 'lightgreen'}}>{'\u2B24'}</Text> :
+                                       <Text style={{color: 'black'}}>{'\u2B24'}</Text>
                             }
                             {' ' + offeredItem.offerStatus}
                         </Text>
@@ -303,26 +312,14 @@ export const NotificationCard = ({vehicle, onPress, data, handleAccept, handleRe
 
     return (
         <View>
-            {data && data.length ?  data.map((item, index) => {
-                console.log(item.offerStatus)
-              if (item.offerStatus === 'Response') {
-                  return (
-                      <Swipeable key={index} renderLeftActions={renderLeftActions}
-                                 renderRightActions={renderRightActions}
-                      >
-                          <View style={styles.notificationContainer}>
-                              <Image source={{uri: vehicle.carUrl}} style={styles.notificationAvatar}/>
-                              {renderContent()}
-                          </View>
-                      </Swipeable>
-                  )
-              }
-            }) :
+            <Swipeable  renderLeftActions={renderLeftActions}
+                        renderRightActions={renderRightActions}
+            >
                 <View style={styles.notificationContainer}>
                     <Image source={{uri: vehicle.carUrl}} style={styles.notificationAvatar}/>
                     {renderContent()}
                 </View>
-            }
+            </Swipeable>
         </View>
     );
 };
@@ -421,16 +418,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         paddingLeft: wp('3%')
     },
-    underlayRight: {
-        flex: 1,
-        backgroundColor:  'teal',
-        justifyContent: 'flex-start'
-    },
-    underlayLeft: {
-        flex: 1,
-        backgroundColor: 'tomato',
-        justifyContent: 'flex-end'
-    }
+
 });
 
 export default observer(Notifications);

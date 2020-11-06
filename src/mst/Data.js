@@ -121,10 +121,50 @@ const Data = types
       }
     });
 
+    const offerAccept = flow(function* offerAccept(userToken, vehicleId) {
+        self.setProcessing(true);
+        try {
+            const response = yield Api.offerAccept(userToken, vehicleId);
+            const {ok, data} = response;
+            if (!data) {
+                alert(__('can_not_connect_server'));
+            }
+            if (ok) {
+                console.log('offer accept  response => +++++++', data);
+                _updateOfferSentList(data)
+            }
+        } catch (e) {
+            console.log('offer accept exception =>',e.message)
+        } finally {
+            self.setProcessing(false)
+        }
+    });
+
+    const getAllOffer = flow(function* getAllOffer(userToken, vehicleId, offerLocation, offerTime, offerGeocoder, spendingTime) {
+        self.setProcessing(true);
+        try {
+            const response = yield Api.getAllOffer(userToken, vehicleId, offerLocation, offerTime, offerGeocoder, spendingTime);
+            const {ok, data} = response;
+            if (!data) {
+                alert(__('can_not_connect_server'));
+            }
+            if (ok) {
+                console.log('offer all get response => +++++++', data);
+                _updateOfferSentList(data)
+            }
+        } catch (e) {
+            console.log('Get All Offer Exception =>', e.message)
+        } finally {
+            self.setProcessing(false);
+        }
+    })
+
     return {
       getVehicleNumber,
       getVehicleList,
       setOfferSent,
+      offerAccept,
+      getAllOffer,
     }
   })
   .extend((self) => {

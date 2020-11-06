@@ -106,6 +106,11 @@ export const getDriverList = (userToken, vehicleId, geoCoder) => api.post(ApiUrl
 export const setOfferSent = (userToken, vehicleId, offerLocation, offerTime, offerGeocoder, spendingTime) =>
     api.post(ApiUrl.offerSend, {vehicleId, offerLocation, offerTime, offerGeocoder, spendingTime}, {headers: {userToken}});
 
+export const offerAccept = (userToken, vehicleId) => api.post(ApiUrl.offerAccept, {vehicleId}, {headers: {userToken}})
+
+export const getAllOffer = (userToken, vehicleId, offerLocation, offerTime, offerGeocoder, spendingTime) =>
+    api.post(ApiUrl.getAllOffer, {vehicleId, offerLocation, offerTime, offerGeocoder, spendingTime}, {headers: {userToken}});
+
 export const searchDoctorsByCategory = (userToken, category) => api.post(ApiUrl.searchDoctorsByCategory, {category}, {headers: {userToken}});
 
 export const searchDoctors = (userToken, name, speciality, address) => api.post(ApiUrl.searchDoctors, {name, speciality, address}, {headers: {userToken}});

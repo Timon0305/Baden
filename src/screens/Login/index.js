@@ -16,7 +16,7 @@ import Images from '@/styles/Images';
 import Loading from '@/components/Loading'
 import {scale, windowWidth} from '@/styles/Sizes';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
-import {GoogleSigninButton} from "@react-native-community/google-signin";
+// import {GoogleSigninButton} from "@react-native-community/google-signin";
 
 const styles = StyleSheet.create({
   socialContainer: {
